@@ -1,0 +1,27 @@
+package com.github.skillfi.tensura_mf.data;
+
+import com.github.skillfi.tensura_mf.TensuraMf;
+import io.github.manasmods.tensura.data.TensuraBiomeTags;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class TensuraMfBiomeTags {
+
+    static TagKey<Biome> modTag(String name) {
+        return create(TensuraMf.create(name));
+    }
+
+    static TagKey<Biome> create(ResourceLocation name) {
+        return TagKey.create(Registries.BIOME, name);
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class EntitySpawn {
+        public static TagKey<Biome> OGRE = TensuraMfBiomeTags.modTag("ogre_spawn");
+    }
+}

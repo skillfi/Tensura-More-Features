@@ -1,0 +1,23 @@
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    runs {
+        data {
+            data()
+            name = "Data Generation"
+            // NeoForge використовує інші властивості, ніж Fabric
+            property("neoforge.logging.markers", "REGISTRIES")
+            programArgs "--all", "--mod", "tensura_mf"
+            programArgs "--output", project(':common').file('src/generated/resources').absolutePath
+            programArgs "--existing", project(':common').file('src/main/resources').absolutePath
+        }
+    }
+}
+
+dependencies {
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+}
+
+remapJar {
+    atAccessWideners.add("${project.archives_name}.accesswidener")
+}

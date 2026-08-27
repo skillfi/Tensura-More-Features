@@ -1,0 +1,13 @@
+loom {
+    accessWidenerPath = file('src/main/resources/tensura_mf.accesswidener')
+}
+
+dependencies {
+
+}
+
+sourceSets {
+    main {
+        resources.srcDir project(':common').file('src/generated/resources').absolutePath
+    }
+}
