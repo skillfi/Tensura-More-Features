@@ -36,6 +36,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
@@ -51,14 +52,16 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
+import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
@@ -182,6 +185,98 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
         this.entityData.set(TOP_COLOR, compound.getInt("TopColor"));
         this.entityData.set(BOTTOM, compound.getInt("Bottom"));
         this.entityData.set(BOTTOM_COLOR, compound.getInt("BottomColor"));
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
+        if (EVOLVING.equals(pKey)) {
+            this.reapplyPosition();
+            this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(pKey);
+    }
+
+    @Override
+    public int getMenuRenderSize() {
+        return 20;
+    }
+
+    @Override
+    public @Nullable Item getEquipmentForArmor(EquipmentSlot pSlot, int pChance) {
+        switch (pSlot) {
+            case HEAD:
+                if (pChance == 0) {
+                    return Items.LEATHER_HELMET;
+                } else if (pChance == 1) {
+                    return Items.CHAINMAIL_HELMET;
+                } else {
+                    if (pChance == 2) {
+                        return Items.IRON_HELMET;
+                    }
+
+                    return null;
+                }
+            case CHEST:
+                if (pChance == 0) {
+                    return Items.LEATHER_CHESTPLATE;
+                } else if (pChance == 1) {
+                    return Items.CHAINMAIL_CHESTPLATE;
+                } else {
+                    if (pChance == 2) {
+                        return Items.IRON_CHESTPLATE;
+                    }
+
+                    return null;
+                }
+            case LEGS:
+                if (pChance == 0) {
+                    return Items.LEATHER_LEGGINGS;
+                } else if (pChance == 1) {
+                    return Items.CHAINMAIL_LEGGINGS;
+                } else {
+                    if (pChance == 2) {
+                        return Items.IRON_LEGGINGS;
+                    }
+
+                    return null;
+                }
+            case FEET:
+                if (pChance == 0) {
+                    return Items.LEATHER_BOOTS;
+                } else if (pChance == 1) {
+                    return Items.CHAINMAIL_BOOTS;
+                } else {
+                    if (pChance == 2) {
+                        return Items.IRON_BOOTS;
+                    }
+
+                    return null;
+                }
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void swing(InteractionHand interactionHand, boolean bl) {
+        super.swing(interactionHand, bl);
+        if (interactionHand.equals(InteractionHand.MAIN_HAND)) {
+            this.triggerAnim("miscController", "attack");
+        } else {
+            this.triggerAnim("miscController", "shield");
+        }
+
+    }
+
+    @Override
+    protected Brain.@NotNull Provider<?> brainProvider() {
+        return new SmartBrainProvider<>(this, true);
+    }
+
+    @Override
+    public int getChestSlots() {
+        return 18 + 9 * this.getCurrentEvolutionState();
     }
 
     public OgreVariant.Gender getGender() {
@@ -405,6 +500,12 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
             this.inventory.setItem(this.getSlotId(EquipmentSlot.MAINHAND), stack);
             this.updateContainerEquipment();
         }
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        this.tickBrain(this);
     }
 
     @Override
