@@ -18,5 +18,12 @@ public class TensuraMfItemModelProvider extends ItemModelProvider {
 
     private void generateSpawnEggs() {
         this.spawnEggItem((Item) TensuraMfSpawnEggs.OGRE.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_WHITE.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_BLACK.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_ROUGE.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_VERT.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_JAUNE.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_VIOLET.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.PRIMORDIAL_BLEU.get());
     }
 }

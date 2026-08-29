@@ -1,0 +1,19 @@
+{
+  "type": "tensura_mf:primordial_jaune",
+  "abilities": [
+    "tensura:possession",
+    "tensura:mana_manipulation",
+    "tensura:thought_acceleration",
+    "tensura:universal_perception",
+    "tensura:abnormal_condition_nullification",
+    "tensura:holy_attack_resistance",
+    "tensura:physical_attack_nullification",
+    "tensura:spiritual_attack_nullification"
+  ],
+  "evolution": "tensura:daemon_lord",
+  "max_aura": 40000,
+  "max_magicule": 100000,
+  "min_aura": 40000,
+  "min_magicule": 100000,
+  "spiritualHealth": 606
+}

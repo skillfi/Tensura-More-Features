@@ -1,4 +1,18 @@
 {
   "entity.tensura_mf.ogre": "Ogre",
-  "item.tensura_mf.ogre_spawn_egg": "Ogre Spawn Egg"
+  "entity.tensura_mf.primordial_black": "Primordial Black",
+  "entity.tensura_mf.primordial_bleu": "Primordial Bleu",
+  "entity.tensura_mf.primordial_jaune": "Primordial Jaune",
+  "entity.tensura_mf.primordial_rouge": "Primordial Rouge",
+  "entity.tensura_mf.primordial_vert": "Primordial Vert",
+  "entity.tensura_mf.primordial_violet": "Primordial Violet",
+  "entity.tensura_mf.primordial_white": "Primordial White",
+  "item.tensura_mf.ogre_spawn_egg": "Ogre Spawn Egg",
+  "item.tensura_mf.primordial_black_spawn_egg": "Primordial Black Spawn Egg",
+  "item.tensura_mf.primordial_bleu_spawn_egg": "Primordial Bleu Spawn Egg",
+  "item.tensura_mf.primordial_jaune_spawn_egg": "Primordial Jaune Spawn Egg",
+  "item.tensura_mf.primordial_rouge_spawn_egg": "Primordial Rouge Spawn Egg",
+  "item.tensura_mf.primordial_vert_spawn_egg": "Primordial Vert Spawn Egg",
+  "item.tensura_mf.primordial_violet_spawn_egg": "Primordial Violet Spawn Egg",
+  "item.tensura_mf.primordial_white_spawn_egg": "Primordial White Spawn Egg"
 }

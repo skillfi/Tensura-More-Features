@@ -1,5 +1,12 @@
 {
   "values": [
-    "tensura_mf:ogre"
+    "tensura_mf:ogre",
+    "tensura_mf:primordial_white",
+    "tensura_mf:primordial_black",
+    "tensura_mf:primordial_rouge",
+    "tensura_mf:primordial_vert",
+    "tensura_mf:primordial_jaune",
+    "tensura_mf:primordial_violet",
+    "tensura_mf:primordial_bleu"
   ]
 }

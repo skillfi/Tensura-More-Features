@@ -1,6 +1,7 @@
 package com.github.skillfi.tensura_mf.neoforge.data.tag;
 
 import com.github.skillfi.tensura_mf.TensuraMf;
+import com.github.skillfi.tensura_mf.data.TensuraMfBiomeTags;
 import com.github.skillfi.tensura_mf.registry.entity.MonsterEntityTypes;
 import io.github.manasmods.tensura.data.TensuraEntityTags;
 import io.github.manasmods.tensura.registry.entity.HumanEntityTypes;
@@ -20,6 +21,14 @@ public class TensuraMfEntityTypeTagProvider extends EntityTypeTagsProvider {
     }
 
     protected void addTags(HolderLookup.@NotNull Provider provider) {
-        this.tag(TensuraEntityTags.MONSTER).add(new EntityType[]{MonsterEntityTypes.OGRE.get()});
+        this.tag(TensuraEntityTags.MONSTER).add(
+                MonsterEntityTypes.OGRE.get(),
+                MonsterEntityTypes.PRIMORDIAL_WHITE.get(),
+                MonsterEntityTypes.PRIMORDIAL_BLACK.get(),
+                MonsterEntityTypes.PRIMORDIAL_ROUGE.get(),
+                MonsterEntityTypes.PRIMORDIAL_VERT.get(),
+                MonsterEntityTypes.PRIMORDIAL_JAUNE.get(),
+                MonsterEntityTypes.PRIMORDIAL_VIOLET.get(),
+                MonsterEntityTypes.PRIMORDIAL_BLEU.get());
     }
 }

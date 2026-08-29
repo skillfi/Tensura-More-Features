@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#tensura_mf:primordial_daemon_spawn",
+  "spawners": {
+    "type": "tensura_mf:primordial_black",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 50
+  }
+}

@@ -3,13 +3,13 @@ package com.github.skillfi.tensura_mf.neoforge;
 import com.github.skillfi.tensura_mf.TensuraMf;
 import com.github.skillfi.tensura_mf.client.TensuraMfClient;
 import com.github.skillfi.tensura_mf.neoforge.data.EnglishProviderImpl;
-import com.github.skillfi.tensura_mf.neoforge.data.loot.TensuraMfEntityLootProvider;
+import com.github.skillfi.tensura_mf.neoforge.data.TensuraMfRegistryProvider;
+import com.github.skillfi.tensura_mf.neoforge.data.UkrainianProviderImpl;
 import com.github.skillfi.tensura_mf.neoforge.data.loot.TensuraMfLootProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.model.TensuraMfItemModelProvider;
+import com.github.skillfi.tensura_mf.neoforge.data.tag.TensuraMfBiomeTagProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.tag.TensuraMfEntityTypeTagProvider;
 import dev.architectury.platform.Platform;
-import io.github.manasmods.tensura.neoforge.data.TensuraRegistryProvider;
-import io.github.manasmods.tensura.neoforge.data.loot.TensuraLootProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -65,9 +65,12 @@ public final class TensuraMfNeoForge {
         ExistingFileHelper helper = event.getExistingFileHelper();
         generator.addProvider(event.includeClient(), new TensuraMfItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new EnglishProviderImpl(output));
+        generator.addProvider(event.includeClient(), new UkrainianProviderImpl(output));
         generator.addProvider(event.includeServer(), new TensuraMfEntityTypeTagProvider(output, lookupProvider, helper));
-        DatapackBuiltinEntriesProvider registryProvider = new TensuraRegistryProvider(output, lookupProvider);
+        DatapackBuiltinEntriesProvider registryProvider = new TensuraMfRegistryProvider(output, lookupProvider);
         CompletableFuture<HolderLookup.Provider> lookup = registryProvider.getRegistryProvider();
+        generator.addProvider(event.includeServer(), registryProvider);
+        generator.addProvider(event.includeServer(), new TensuraMfBiomeTagProvider(output, lookup, helper));
         generator.addProvider(event.includeServer(), new TensuraMfLootProvider(output, lookup));
     }
 }

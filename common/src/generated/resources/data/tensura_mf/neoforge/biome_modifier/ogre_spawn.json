@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#tensura_mf:ogre_spawn",
+  "spawners": {
+    "type": "tensura_mf:ogre",
+    "maxCount": 4,
+    "minCount": 1,
+    "weight": 80
+  }
+}

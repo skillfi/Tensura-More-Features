@@ -1,8 +1,10 @@
 package com.github.skillfi.tensura_mf.neoforge.data.loot;
 
 
+import com.github.skillfi.tensura_mf.TensuraMf;
 import com.github.skillfi.tensura_mf.registry.entity.MonsterEntityTypes;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
@@ -14,6 +16,9 @@ import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFu
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.stream.Stream;
 
 public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
     public TensuraMfEntityLootProvider(HolderLookup.Provider lookup) {
@@ -21,7 +26,7 @@ public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
     }
 
     public void generate() {
-        this.add((EntityType) MonsterEntityTypes.OGRE.get(),
+        this.add(MonsterEntityTypes.OGRE.get(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
@@ -30,7 +35,27 @@ public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
                                         .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 3.0F)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
-                                .add(LootItem.lootTableItem(Items.BONE)
+                                        .add(LootItem.lootTableItem(Items.BONE)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))));
+        this.add(MonsterEntityTypes.PRIMORDIAL_WHITE.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_BLACK.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_ROUGE.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_VERT.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_JAUNE.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_VIOLET.get(), primordialDaemonLoot());
+        this.add(MonsterEntityTypes.PRIMORDIAL_BLEU.get(), primordialDaemonLoot());
+    }
+
+    private static LootTable.Builder primordialDaemonLoot() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .add(LootItem.lootTableItem(Items.ENDER_PEARL)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))));
+    }
+
+    @Override
+    protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
+        return BuiltInRegistries.ENTITY_TYPE.stream().filter((type) -> BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals(TensuraMf.MOD_ID));
     }
 }
