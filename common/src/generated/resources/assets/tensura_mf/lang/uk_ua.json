@@ -1,17 +1,3 @@
 {
-  "entity.tensura_mf.ogre": "Огр",
-  "entity.tensura_mf.primordial_black": "Первісний чорний демон",
-  "entity.tensura_mf.primordial_bleu": "Первісний синій демон",
-  "entity.tensura_mf.primordial_jaune": "Первісний жовтий демон",
-  "entity.tensura_mf.primordial_rouge": "Первісний червоний демон",
-  "entity.tensura_mf.primordial_vert": "Первісний зелений демон",
-  "entity.tensura_mf.primordial_violet": "Первісний фіолетовий демон",
-  "entity.tensura_mf.primordial_white": "Первісний білий демон",
-  "item.tensura_mf.primordial_black_spawn_egg": "Яйце призову первісного чорного демона",
-  "item.tensura_mf.primordial_bleu_spawn_egg": "Яйце призову первісного синього демона",
-  "item.tensura_mf.primordial_jaune_spawn_egg": "Яйце призову первісного жовтого демона",
-  "item.tensura_mf.primordial_rouge_spawn_egg": "Яйце призову первісного червоного демона",
-  "item.tensura_mf.primordial_vert_spawn_egg": "Яйце призову первісного зеленого демона",
-  "item.tensura_mf.primordial_violet_spawn_egg": "Яйце призову первісного фіолетового демона",
-  "item.tensura_mf.primordial_white_spawn_egg": "Яйце призову первісного білого демона"
+  "entity.tensura_mf.ogre": "Огр"
 }

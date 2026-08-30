@@ -18,9 +18,6 @@ public class TensuraMfBiomeModification {
 
     public static void initMobSpawning() {
         addSpawn(TensuraMfBiomeTags.EntitySpawn.OGRE, MonsterEntityTypes.OGRE.get(), 80, 1, 4, 0.8);
-        addSpawn(TensuraMfBiomeTags.EntitySpawn.PRIMORDIAL_DAEMON, MonsterEntityTypes.PRIMORDIAL_WHITE.get(), 50, 1, 1, 0.8);
-        addSpawn(TensuraMfBiomeTags.EntitySpawn.PRIMORDIAL_DAEMON, MonsterEntityTypes.PRIMORDIAL_BLACK.get(), 50, 1, 1, 0.8);
-//        addSpawn(TensuraMfBiomeTags.EntitySpawn.PRIMORDIAL_DAEMON, MonsterEntityTypes.PRIMORDIAL_ROUGE.get(), 50, 0, 1, 0.8);
     }
 
     private static void addSpawn(TagKey<Biome> biome, EntityType<?> entityType, int weight, int min, int max, double charge) {

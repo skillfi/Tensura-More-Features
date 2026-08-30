@@ -22,13 +22,6 @@ public class TensuraMfEntityTypeTagProvider extends EntityTypeTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(TensuraEntityTags.MONSTER).add(
-                MonsterEntityTypes.OGRE.get(),
-                MonsterEntityTypes.PRIMORDIAL_WHITE.get(),
-                MonsterEntityTypes.PRIMORDIAL_BLACK.get(),
-                MonsterEntityTypes.PRIMORDIAL_ROUGE.get(),
-                MonsterEntityTypes.PRIMORDIAL_VERT.get(),
-                MonsterEntityTypes.PRIMORDIAL_JAUNE.get(),
-                MonsterEntityTypes.PRIMORDIAL_VIOLET.get(),
-                MonsterEntityTypes.PRIMORDIAL_BLEU.get());
+                MonsterEntityTypes.OGRE.get());
     }
 }

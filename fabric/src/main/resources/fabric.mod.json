@@ -21,6 +21,7 @@
       "com.github.skillfi.tensura_mf.fabric.client.TensuraMfFabricClient"
     ]
   },
+  "accessWidener": "tensura_mf.accesswidener",
   "mixins": [
     "tensura_mf.mixins.json"
   ],

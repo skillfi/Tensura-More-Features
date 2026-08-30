@@ -1,9 +1,0 @@
-{
-  "type": "neoforge:add_spawn_costs",
-  "biomes": "#tensura_mf:primordial_daemon_spawn",
-  "entity_types": "tensura_mf:primordial_white",
-  "spawn_cost": {
-    "charge": 0.8,
-    "energy_budget": 4.0
-  }
-}

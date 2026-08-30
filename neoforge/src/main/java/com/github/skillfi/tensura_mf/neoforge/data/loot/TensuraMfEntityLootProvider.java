@@ -37,21 +37,6 @@ public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
                                 .setRolls(ConstantValue.exactly(1.0F))
                                         .add(LootItem.lootTableItem(Items.BONE)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))));
-        this.add(MonsterEntityTypes.PRIMORDIAL_WHITE.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_BLACK.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_ROUGE.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_VERT.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_JAUNE.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_VIOLET.get(), primordialDaemonLoot());
-        this.add(MonsterEntityTypes.PRIMORDIAL_BLEU.get(), primordialDaemonLoot());
-    }
-
-    private static LootTable.Builder primordialDaemonLoot() {
-        return LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
-                        .add(LootItem.lootTableItem(Items.ENDER_PEARL)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))));
     }
 
     @Override

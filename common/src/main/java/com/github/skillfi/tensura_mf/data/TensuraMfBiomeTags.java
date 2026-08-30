@@ -24,6 +24,5 @@ public class TensuraMfBiomeTags {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class EntitySpawn {
         public static TagKey<Biome> OGRE = TensuraMfBiomeTags.modTag("ogre_spawn");
-        public static TagKey<Biome> PRIMORDIAL_DAEMON = TensuraMfBiomeTags.modTag("primordial_daemon_spawn");
     }
 }
