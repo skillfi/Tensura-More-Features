@@ -58,6 +58,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -417,10 +418,11 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        String prefix = getAnimationPrefix();
         controllers.add(new AnimationController(this, "loopController", 10, this::loopController), (new AnimationController(this, "miscController", 3, (event) -> {
             this.swinging = false;
             return PlayState.STOP;
-        })).triggerableAnim("attack", RawAnimation.begin().then("animation.ogre.attack", Animation.LoopType.PLAY_ONCE)).triggerableAnim("shield", RawAnimation.begin().then("animation.ogre.shield", Animation.LoopType.PLAY_ONCE)).triggerableAnim("crossbow", RawAnimation.begin().then("animation.ogre.crossbow", Animation.LoopType.PLAY_ONCE)).triggerableAnim("spear", RawAnimation.begin().then("animation.ogre.spear", Animation.LoopType.PLAY_ONCE)));
+        })).triggerableAnim("attack", RawAnimation.begin().then("animation." + prefix + ".attack", Animation.LoopType.PLAY_ONCE)).triggerableAnim("shield", RawAnimation.begin().then("animation." + prefix + ".shield", Animation.LoopType.PLAY_ONCE)).triggerableAnim("crossbow", RawAnimation.begin().then("animation." + prefix + ".crossbow", Animation.LoopType.PLAY_ONCE)).triggerableAnim("spear", RawAnimation.begin().then("animation." + prefix + ".spear", Animation.LoopType.PLAY_ONCE)));
     }
 
     /** Builds idle activities such as breeding, following, work and random wandering. */
@@ -527,9 +529,39 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
         }
     }
 
-    private void randomTexture() {
+    /** Creates offspring in the form represented by this mob's current evolution state. */
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        int evolutionState = this.getCurrentEvolutionState();
+        OgreEntity offspring;
+
+        if (this instanceof WickedOniEntity || this instanceof DeathOniEntity || this instanceof DivineFighterEntity) {
+            offspring = switch (evolutionState) {
+                case 2 -> new WickedOniEntity(MonsterEntityTypes.WICKED_ONI.get(), level);
+                case 3 -> new DeathOniEntity(MonsterEntityTypes.DEATH_ONI.get(), level);
+                case 4 -> new DivineFighterEntity(MonsterEntityTypes.DIVINE_FIGHTER.get(), level);
+                default -> new OgreEntity(MonsterEntityTypes.OGRE.get(), level);
+            };
+        } else {
+            offspring = switch (evolutionState) {
+                case 1 -> new KijinEntity(MonsterEntityTypes.KIJIN.get(), level);
+                case 2 -> new MysticOniEntity(MonsterEntityTypes.MYSTIC_ONI.get(), level);
+                case 3 -> new SpiritOniEntity(MonsterEntityTypes.SPIRIT_ONI.get(), level);
+                case 4 -> new DivineOniEntity(MonsterEntityTypes.DIVINE_ONI.get(), level);
+                default -> new OgreEntity(MonsterEntityTypes.OGRE.get(), level);
+            };
+        }
+
+        offspring.setCurrentEvolutionState(evolutionState);
+        offspring.randomTexture();
+        return offspring;
+    }
+
+    protected void randomTexture() {
         this.setGender(this.random.nextBoolean() ? 0 : 1);
-        this.setSkin(OgreVariant.Skin.getRandom(this));
+        this.setSkin(this.getResource().getPath().equals("ogre")
+                ? OgreVariant.Skin.getRandom(this)
+                : OgreVariant.Skin.LIGHT.getId());
         this.setFace(OgreVariant.Face.getRandom(this.getGender(), this));
         List<Integer> hairColors = TensuraMfBehaviourHelper.CONFIG.Ogre.ogreHairColors;
         this.setHair(OgreVariant.Hair.getRandom(this));
@@ -537,10 +569,10 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
         List<Integer> colors = TensuraMfBehaviourHelper.CONFIG.Ogre.ogreClothingColors;
         this.setTop(OgreVariant.Top.getRandom(this));
         this.setHorns(OgreVariant.Horns.getRandom(this));
-//        this.setTopColor(colors.get(this.random.nextInt(colors.size())));
+        this.setTopColor(colors.get(this.random.nextInt(colors.size())));
         List<Integer> bottomColors = TensuraMfBehaviourHelper.CONFIG.Ogre.ogreBottomClothesColors;
         this.setBottom(OgreVariant.Bottom.getRandom(this));
-//        this.setBottomColor(bottomColors.get(this.random.nextInt(bottomColors.size())));
+        this.setBottomColor(bottomColors.get(this.random.nextInt(bottomColors.size())));
     }
 
     @Override
@@ -559,22 +591,27 @@ public class OgreEntity extends PlayerLikeEntity implements SmartBrainOwner<Ogre
         return TensuraEntityTypes.rollSpawn(TensuraMfEntityTypes.CONFIG.SpawnChance.ogre, pLevel, pSpawnReason) && super.checkSpawnRules(pLevel, pSpawnReason);
     }
 
+    protected String getAnimationPrefix() {
+        return "ogre";
+    }
+
     protected PlayState loopController(AnimationState<OgreEntity> state) {
+        String prefix = getAnimationPrefix();
         String name;
         if (this.isSleeping()) {
-            name = "animation.ogre.idle";
+            name = "animation." + prefix + ".idle";
         } else if (this.isInSittingPose()) {
-            name = "animation.ogre.sit";
+            name = "animation." + prefix + ".sit";
         } else if (this.shouldSwim()) {
-            name = "animation.ogre.swim";
+            name = "animation." + prefix + ".swim";
         } else if (state.isMoving()) {
             if (!this.isAngry() && !this.isSprinting() && (this.getControllingPassenger() == null || !this.getControllingPassenger().isSprinting())) {
-                name = "animation.ogre.walk";
+                name = "animation." + prefix + ".walk";
             } else {
-                name = "animation.ogre.run";
+                name = "animation." + prefix + ".run";
             }
         } else {
-            name = "animation.ogre.idle";
+            name = "animation." + prefix + ".idle";
         }
 
         return state.setAndContinue(RawAnimation.begin().thenLoop(name));

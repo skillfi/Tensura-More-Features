@@ -22,6 +22,9 @@ public class TensuraMfEntityTypeTagProvider extends EntityTypeTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(TensuraEntityTags.MONSTER).add(
-                MonsterEntityTypes.OGRE.get());
+                MonsterEntityTypes.OGRE.get(), MonsterEntityTypes.KIJIN.get(),
+                MonsterEntityTypes.MYSTIC_ONI.get(), MonsterEntityTypes.WICKED_ONI.get(),
+                MonsterEntityTypes.SPIRIT_ONI.get(), MonsterEntityTypes.DEATH_ONI.get(),
+                MonsterEntityTypes.DIVINE_ONI.get(), MonsterEntityTypes.DIVINE_FIGHTER.get());
     }
 }

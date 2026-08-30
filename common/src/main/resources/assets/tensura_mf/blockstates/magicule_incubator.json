@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"tensura_mf:block/magicule_incubator"},"facing=east":{"model":"tensura_mf:block/magicule_incubator","y":90},"facing=south":{"model":"tensura_mf:block/magicule_incubator","y":180},"facing=west":{"model":"tensura_mf:block/magicule_incubator","y":270}}}

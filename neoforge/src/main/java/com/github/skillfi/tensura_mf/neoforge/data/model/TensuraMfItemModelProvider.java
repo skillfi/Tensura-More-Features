@@ -18,5 +18,12 @@ public class TensuraMfItemModelProvider extends ItemModelProvider {
 
     private void generateSpawnEggs() {
         this.spawnEggItem((Item) TensuraMfSpawnEggs.OGRE.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.KIJIN.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.MYSTIC_ONI.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.WICKED_ONI.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.SPIRIT_ONI.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.DEATH_ONI.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.DIVINE_ONI.get());
+        this.spawnEggItem((Item) TensuraMfSpawnEggs.DIVINE_FIGHTER.get());
     }
 }

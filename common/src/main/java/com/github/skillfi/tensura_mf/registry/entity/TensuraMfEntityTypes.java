@@ -24,6 +24,13 @@ public class TensuraMfEntityTypes {
 
     public static void createAttributes() {
         EntityAttributeRegistry.register(MonsterEntityTypes.OGRE, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.KIJIN, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.MYSTIC_ONI, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.WICKED_ONI, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.SPIRIT_ONI, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.DEATH_ONI, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.DIVINE_ONI, OgreEntity::setAttributes);
+        EntityAttributeRegistry.register(MonsterEntityTypes.DIVINE_FIGHTER, OgreEntity::setAttributes);
     }
 
     public static void spawnPlacements() {

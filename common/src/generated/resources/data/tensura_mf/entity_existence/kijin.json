@@ -1,0 +1,19 @@
+{
+  "type": "tensura_mf:kijin",
+  "abilities": [
+    "tensura:strength",
+    "tensura:darkness_transform",
+    "tensura:earth_transform",
+    "tensura:flame_transform",
+    "tensura:light_transform",
+    "tensura:space_transform",
+    "tensura:water_transform",
+    "tensura:wind_transform"
+  ],
+  "evolution": "tensura:mystic_oni",
+  "max_aura": 5000,
+  "max_magicule": 5000,
+  "min_aura": 5000,
+  "min_magicule": 5000,
+  "spiritualHealth": 100
+}

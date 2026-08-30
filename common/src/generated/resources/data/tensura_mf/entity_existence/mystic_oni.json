@@ -1,0 +1,19 @@
+{
+  "type": "tensura_mf:mystic_oni",
+  "abilities": [
+    "tensura:strength",
+    "tensura:darkness_transform",
+    "tensura:earth_transform",
+    "tensura:flame_transform",
+    "tensura:light_transform",
+    "tensura:space_transform",
+    "tensura:water_transform",
+    "tensura:wind_transform"
+  ],
+  "evolution": "tensura:spirit_oni",
+  "max_aura": 100000,
+  "max_magicule": 100000,
+  "min_aura": 40000,
+  "min_magicule": 40000,
+  "spiritualHealth": 400
+}

@@ -26,6 +26,10 @@ public class TensuraMfFabricPlatform{
         return registerSupplier(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, blockEntityType);
     }
 
+    public static <T extends net.minecraft.world.inventory.AbstractContainerMenu> Supplier<net.minecraft.world.inventory.MenuType<T>> registerMenu(String id, Supplier<net.minecraft.world.inventory.MenuType<T>> menuType) {
+        return registerSupplier(BuiltInRegistries.MENU, id, menuType);
+    }
+
     
     public static <T extends Block> Supplier<T> registerBlock(String id, Supplier<T> block) {
         return registerSupplier(BuiltInRegistries.BLOCK, id, block);

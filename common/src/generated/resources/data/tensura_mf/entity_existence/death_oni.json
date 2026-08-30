@@ -1,0 +1,14 @@
+{
+  "type": "tensura_mf:death_oni",
+  "abilities": [
+    "tensura:strength",
+    "tensura:ogre_berserker",
+    "tensura:ultraspeed_regeneration"
+  ],
+  "evolution": "tensura:divine_fighter",
+  "max_aura": 400000,
+  "max_magicule": 400000,
+  "min_aura": 400000,
+  "min_magicule": 400000,
+  "spiritualHealth": 3040
+}

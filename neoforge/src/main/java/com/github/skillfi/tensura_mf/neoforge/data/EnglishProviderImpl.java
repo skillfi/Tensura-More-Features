@@ -3,6 +3,7 @@ package com.github.skillfi.tensura_mf.neoforge.data;
 import com.github.skillfi.tensura_mf.data.annotations.Language;
 import com.github.skillfi.tensura_mf.registry.entity.MonsterEntityTypes;
 import com.github.skillfi.tensura_mf.registry.item.TensuraMfSpawnEggs;
+import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +22,11 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
     public void addTranslations() {
         addEntities();
         addItems();
+        add(TensuraMfBlocks.MAGICULE_INCUBATOR_BLOCK.get(), "Magicule Incubator");
+        add("item.tensura_mf.magicule_incubator", "Magicule Incubator");
+        add(TensuraMfBlocks.PIPE.get(), "Magic Energy Pipe");
+        add("item.tensura_mf.pipe", "Magic Energy Pipe");
+        add("container.tensura_mf.magicule_incubator", "Magicule Incubator");
     }
 
     private void addEntities(){

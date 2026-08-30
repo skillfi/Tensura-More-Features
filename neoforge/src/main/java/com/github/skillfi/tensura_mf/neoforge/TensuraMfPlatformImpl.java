@@ -38,6 +38,10 @@ public class TensuraMfPlatformImpl {
         return BLOCK_ENTITIES.register(id, supplier);
     }
 
+    public static <T extends net.minecraft.world.inventory.AbstractContainerMenu> Supplier<net.minecraft.world.inventory.MenuType<T>> registerMenu(String id, Supplier<net.minecraft.world.inventory.MenuType<T>> supplier) {
+        return MENUS.register(id, supplier);
+    }
+
 
     
     public static <T extends Block> Supplier<T> registerBlock(String id, Supplier<T> supplier) {

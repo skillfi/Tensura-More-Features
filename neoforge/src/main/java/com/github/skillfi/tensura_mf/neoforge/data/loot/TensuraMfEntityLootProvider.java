@@ -26,8 +26,7 @@ public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
     }
 
     public void generate() {
-        this.add(MonsterEntityTypes.OGRE.get(),
-                LootTable.lootTable()
+        LootTable.Builder table = LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(LootItem.lootTableItem(Items.LEATHER)
@@ -36,7 +35,15 @@ public class TensuraMfEntityLootProvider extends EntityLootSubProvider {
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                         .add(LootItem.lootTableItem(Items.BONE)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))));
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))));
+        this.add(MonsterEntityTypes.OGRE.get(), table);
+        this.add(MonsterEntityTypes.KIJIN.get(), table);
+        this.add(MonsterEntityTypes.MYSTIC_ONI.get(), table);
+        this.add(MonsterEntityTypes.WICKED_ONI.get(), table);
+        this.add(MonsterEntityTypes.SPIRIT_ONI.get(), table);
+        this.add(MonsterEntityTypes.DEATH_ONI.get(), table);
+        this.add(MonsterEntityTypes.DIVINE_ONI.get(), table);
+        this.add(MonsterEntityTypes.DIVINE_FIGHTER.get(), table);
     }
 
     @Override

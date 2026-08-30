@@ -1,5 +1,12 @@
 {
   "values": [
-    "tensura_mf:ogre"
+    "tensura_mf:ogre",
+    "tensura_mf:kijin",
+    "tensura_mf:mystic_oni",
+    "tensura_mf:wicked_oni",
+    "tensura_mf:spirit_oni",
+    "tensura_mf:death_oni",
+    "tensura_mf:divine_oni",
+    "tensura_mf:divine_fighter"
   ]
 }

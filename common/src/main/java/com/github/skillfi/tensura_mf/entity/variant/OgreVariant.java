@@ -19,6 +19,10 @@ import java.util.List;
 @UtilityClass
 public class OgreVariant {
 
+    private static String textureRoot(OgreEntity entity) {
+        return entity.getResource().getPath().equals("ogre") ? "ogre" : "kijin";
+    }
+
     @RequiredArgsConstructor
     @Getter
     public static enum Gender {
@@ -77,7 +81,10 @@ public class OgreVariant {
         }
 
         public static ResourceLocation getTextureLocation(OgreEntity entity) {
-            return (ResourceLocation)entity.getSkin().textures.get(entity.getGender());
+            Skin skin = entity.getSkin();
+            String root = textureRoot(entity);
+            String skinName = root.equals("kijin") ? "light_" : skin.getLocation();
+            return TensuraMf.create("textures/entity/" + root + "/" + entity.getGender().getLocation() + "/skin/" + skinName + entity.getGender().getLocation() + ".png");
         }
 
         public static Skin byId(int id) {
@@ -97,7 +104,7 @@ public class OgreVariant {
         FACE_D(3, "unisex/faces/face_d", Gender.OTHER),
         FACE_E(4, "unisex/faces/face_e", Gender.OTHER);
 
-        private static final Face[] BY_ID = (Face[])Arrays.stream(values()).sorted(Comparator.comparingInt(Face::getId)).toArray((x$0) -> new Face[x$0]);
+        private static final Face[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Face::getId)).toArray((x$0) -> new Face[x$0]);
         private static final List<Integer> MALE_LIST = Arrays.stream(values()).filter((skin) -> skin.getGender() != Gender.FEMALE).map(Face::getId).toList();
         private static final List<Integer> FEMALE_LIST = Arrays.stream(values()).filter((skin) -> skin.getGender() != Gender.MALE).map(Face::getId).toList();
         private final int id;
@@ -114,6 +121,12 @@ public class OgreVariant {
 
         public ResourceLocation getTextureLocation() {
             return this.texture;
+        }
+
+        public ResourceLocation getTextureLocation(OgreEntity entity) {
+            String location = this.location;
+            if (textureRoot(entity).equals("kijin") && this == FACE_C) location = "unisex/faces/face_a";
+            return TensuraMf.create("textures/entity/" + textureRoot(entity) + "/" + location + ".png");
         }
 
         public static Face byId(int id) {
@@ -148,7 +161,10 @@ public class OgreVariant {
         }
 
         public static ResourceLocation getTextureLocation(OgreEntity entity) {
-            return entity.getHair().textures.get(entity.getGender());
+            Hair hair = entity.getHair();
+            String gender = entity.getGender().getLocation();
+            String fileGender = textureRoot(entity).equals("kijin") && entity.isMale() ? "female" : gender;
+            return TensuraMf.create("textures/entity/" + textureRoot(entity) + "/" + gender + "/hair/" + hair.getLocation() + fileGender + ".png");
         }
 
         public static Hair byId(int id) {
@@ -177,7 +193,7 @@ public class OgreVariant {
         }
 
         public static ResourceLocation getTextureLocation(OgreEntity entity) {
-            return entity.getTop().texture;
+            return TensuraMf.create("textures/entity/" + textureRoot(entity) + "/unisex/top/chest_" + entity.getTop().getLocation() + ".png");
         }
 
         public static Top byId(int id) {
@@ -206,7 +222,7 @@ public class OgreVariant {
         }
 
         public static ResourceLocation getTextureLocation(OgreEntity entity) {
-            return entity.getBottom().texture;
+            return TensuraMf.create("textures/entity/" + textureRoot(entity) + "/unisex/bottom/legs_" + entity.getBottom().getLocation() + ".png");
         }
 
         public static Bottom byId(int id) {

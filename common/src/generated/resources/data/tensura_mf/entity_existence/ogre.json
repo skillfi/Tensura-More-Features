@@ -1,10 +1,12 @@
 {
   "type": "tensura_mf:ogre",
-  "abilities": [],
+  "abilities": [
+    "tensura:strength"
+  ],
   "evolution": "tensura:kijin",
-  "max_aura": 1500,
-  "max_magicule": 1500,
-  "min_aura": 500,
-  "min_magicule": 500,
-  "spiritualHealth": 40
+  "max_aura": 2500,
+  "max_magicule": 600,
+  "min_aura": 1500,
+  "min_magicule": 300,
+  "spiritualHealth": 15
 }

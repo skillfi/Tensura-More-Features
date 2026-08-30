@@ -10,6 +10,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,6 +21,11 @@ public class TensuraMfPlatform {
     
     @ExpectPlatform
     public static <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String id, Supplier<BlockEntityType<T>> blockEntityType) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T extends net.minecraft.world.inventory.AbstractContainerMenu> Supplier<MenuType<T>> registerMenu(String id, Supplier<MenuType<T>> menuType) {
         throw new AssertionError();
     }
 

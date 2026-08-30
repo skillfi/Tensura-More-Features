@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import software.bernie.geckolib.renderer.layer.ItemArmorGeoLayer;
 
@@ -37,7 +38,11 @@ public class OgreRenderer extends GeoEntityRenderer<OgreEntity> {
     protected ItemStack offhandItem;
 
     public OgreRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new OgreModel());
+        this(renderManager, new OgreModel());
+    }
+
+    protected OgreRenderer(EntityRendererProvider.Context renderManager, GeoModel<OgreEntity> model) {
+        super(renderManager, model);
         this.addRenderLayer(new OgreLayer.Hair(this));
         this.addRenderLayer(new OgreLayer.Face(this));
         this.addRenderLayer(new OgreLayer.Top(this));

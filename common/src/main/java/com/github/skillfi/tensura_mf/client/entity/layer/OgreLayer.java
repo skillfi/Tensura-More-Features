@@ -68,7 +68,7 @@ public class OgreLayer {
                 color = TensuraColors.getARGBWithAlpha(color, 0.1F);
             }
 
-            RenderType type = getRenderType(ogre.getFace().getTextureLocation());
+            RenderType type = getRenderType(ogre.getFace().getTextureLocation(ogre));
             this.getRenderer().reRender(this.getDefaultBakedModel(ogre), poseStack, bufferSource, ogre, type, bufferSource.getBuffer(type), partialTick, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
 
@@ -91,7 +91,7 @@ public class OgreLayer {
                 color = TensuraColors.getARGBWithAlpha(color, 0.1F);
             }
 
-            RenderType type = getRenderType(ogre.getTop().getTexture());
+            RenderType type = getRenderType(OgreVariant.Top.getTextureLocation(ogre));
             this.getRenderer().reRender(this.getDefaultBakedModel(ogre), poseStack, bufferSource, ogre, type, bufferSource.getBuffer(type), partialTick, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
     }
@@ -112,7 +112,7 @@ public class OgreLayer {
                 color = TensuraColors.getARGBWithAlpha(color, 0.1F);
             }
 
-            RenderType type = getRenderType(ogre.getBottom().getTexture());
+            RenderType type = getRenderType(OgreVariant.Bottom.getTextureLocation(ogre));
             this.getRenderer().reRender(this.getDefaultBakedModel(ogre), poseStack, bufferSource, ogre, type, bufferSource.getBuffer(type), partialTick, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
     }

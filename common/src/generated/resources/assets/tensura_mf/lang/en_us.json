@@ -1,4 +1,18 @@
 {
+  "entity.tensura_mf.death_oni": "Death Oni",
+  "entity.tensura_mf.divine_fighter": "Divine Fighter",
+  "entity.tensura_mf.divine_oni": "Divine Oni",
+  "entity.tensura_mf.kijin": "Kijin",
+  "entity.tensura_mf.mystic_oni": "Mystic Oni",
   "entity.tensura_mf.ogre": "Ogre",
-  "item.tensura_mf.ogre_spawn_egg": "Ogre Spawn Egg"
+  "entity.tensura_mf.spirit_oni": "Spirit Oni",
+  "entity.tensura_mf.wicked_oni": "Wicked Oni",
+  "item.tensura_mf.death_oni_spawn_egg": "Death Oni Spawn Egg",
+  "item.tensura_mf.divine_fighter_spawn_egg": "Divine Fighter Spawn Egg",
+  "item.tensura_mf.divine_oni_spawn_egg": "Divine Oni Spawn Egg",
+  "item.tensura_mf.kijin_spawn_egg": "Kijin Spawn Egg",
+  "item.tensura_mf.mystic_oni_spawn_egg": "Mystic Oni Spawn Egg",
+  "item.tensura_mf.ogre_spawn_egg": "Ogre Spawn Egg",
+  "item.tensura_mf.spirit_oni_spawn_egg": "Spirit Oni Spawn Egg",
+  "item.tensura_mf.wicked_oni_spawn_egg": "Wicked Oni Spawn Egg"
 }

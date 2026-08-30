@@ -22,6 +22,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -42,6 +43,7 @@ public final class TensuraMfNeoForge {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TensuraMf.MOD_ID);
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, TensuraMf.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, TensuraMf.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, TensuraMf.MOD_ID);
 
     public TensuraMfNeoForge(IEventBus modEventBus) {
         SOUND_EVENTS.register(modEventBus);
@@ -51,6 +53,7 @@ public final class TensuraMfNeoForge {
         CREATIVE_TABS.register(modEventBus);
         ARMOR_MATERIALS.register(modEventBus);
         ITEMS.register(modEventBus);
+        MENUS.register(modEventBus);
         modEventBus.addListener(this::gatherData);
         TensuraMf.init();
         if (Platform.getEnv() == Dist.CLIENT) {

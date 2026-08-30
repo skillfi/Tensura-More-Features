@@ -1,0 +1,14 @@
+{
+  "type": "tensura_mf:divine_fighter",
+  "abilities": [
+    "tensura:strength",
+    "tensura:ogre_berserker",
+    "tensura:ultraspeed_regeneration",
+    "tensura:divine_ki_release"
+  ],
+  "max_aura": 1000000,
+  "max_magicule": 1000000,
+  "min_aura": 1000000,
+  "min_magicule": 1000000,
+  "spiritualHealth": 5840
+}
