@@ -1,19 +1,18 @@
 package com.github.skillfi.tensura_mf.neoforge;
 
 import com.github.skillfi.tensura_mf.TensuraMf;
-import com.github.skillfi.tensura_mf.client.TensuraMfClient;
 import com.github.skillfi.tensura_mf.neoforge.data.EnglishProviderImpl;
+import com.github.skillfi.tensura_mf.neoforge.data.TensuraMfRecipeProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.TensuraMfRegistryProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.UkrainianProviderImpl;
 import com.github.skillfi.tensura_mf.neoforge.data.loot.TensuraMfLootProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.model.TensuraMfItemModelProvider;
+import com.github.skillfi.tensura_mf.neoforge.data.model.TensuraMfBlockStateProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.tag.TensuraMfBiomeTagProvider;
 import com.github.skillfi.tensura_mf.neoforge.data.tag.TensuraMfEntityTypeTagProvider;
-import dev.architectury.platform.Platform;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 
 import net.minecraft.core.registries.Registries;
@@ -56,9 +55,6 @@ public final class TensuraMfNeoForge {
         MENUS.register(modEventBus);
         modEventBus.addListener(this::gatherData);
         TensuraMf.init();
-        if (Platform.getEnv() == Dist.CLIENT) {
-            TensuraMfClient.init();
-        }
     }
 
     public void gatherData(GatherDataEvent event) {
@@ -67,6 +63,7 @@ public final class TensuraMfNeoForge {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper helper = event.getExistingFileHelper();
         generator.addProvider(event.includeClient(), new TensuraMfItemModelProvider(output, helper));
+        generator.addProvider(event.includeClient(), new TensuraMfBlockStateProvider(output, helper));
         generator.addProvider(event.includeClient(), new EnglishProviderImpl(output));
         generator.addProvider(event.includeClient(), new UkrainianProviderImpl(output));
         generator.addProvider(event.includeServer(), new TensuraMfEntityTypeTagProvider(output, lookupProvider, helper));
@@ -75,5 +72,6 @@ public final class TensuraMfNeoForge {
         generator.addProvider(event.includeServer(), registryProvider);
         generator.addProvider(event.includeServer(), new TensuraMfBiomeTagProvider(output, lookup, helper));
         generator.addProvider(event.includeServer(), new TensuraMfLootProvider(output, lookup));
+        generator.addProvider(event.includeServer(), new TensuraMfRecipeProvider(output, lookup));
     }
 }

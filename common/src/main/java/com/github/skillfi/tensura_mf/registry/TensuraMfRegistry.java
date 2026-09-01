@@ -5,8 +5,8 @@ import com.github.skillfi.tensura_mf.registry.item.TensuraMfSpawnEggs;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocks;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
 import com.github.skillfi.tensura_mf.registry.menu.TensuraMfMenus;
-import com.github.skillfi.tensura_mf.registry.item.TensuraMfItems;
 
+import com.github.skillfi.tensura_mf.registry.recipe.TensuraMfRecipes;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +18,7 @@ public class TensuraMfRegistry {
         TensuraMfSpawnEggs.init();
         TensuraMfBlocks.init();
         TensuraMfBlocksEntities.init();
+        TensuraMfRecipes.init();
         TensuraMfMenus.init();
-        TensuraMfItems.init();
     }
 }

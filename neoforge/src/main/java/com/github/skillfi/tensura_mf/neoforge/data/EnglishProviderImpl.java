@@ -22,11 +22,12 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
     public void addTranslations() {
         addEntities();
         addItems();
-        add(TensuraMfBlocks.MAGICULE_INCUBATOR_BLOCK.get(), "Magicule Incubator");
+        add(TensuraMfBlocks.MAGICULE_INCUBATOR.get(), "Magicule Incubator");
         add("item.tensura_mf.magicule_incubator", "Magicule Incubator");
         add(TensuraMfBlocks.PIPE.get(), "Magic Energy Pipe");
         add("item.tensura_mf.pipe", "Magic Energy Pipe");
         add("container.tensura_mf.magicule_incubator", "Magicule Incubator");
+        tooltips();
     }
 
     private void addEntities(){
@@ -46,6 +47,11 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
                 // Ігнорувати недоступні поля
             }
         }
+    }
+
+    private void tooltips() {
+        add("tooltip.tensura_mf.magic_incubator.magic_energy", "Magic Energy: %s");
+        add("tensura_mf.jei.incubating.title", "Incubating");
     }
 
     private void addItems() {

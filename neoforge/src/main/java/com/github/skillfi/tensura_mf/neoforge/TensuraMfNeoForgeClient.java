@@ -14,7 +14,7 @@ import com.github.skillfi.tensura_mf.client.screen.MagiculeIncubatorScreen;
 import com.github.skillfi.tensura_mf.registry.menu.TensuraMfMenus;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@EventBusSubscriber(modid = TensuraMf.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TensuraMf.MOD_ID, value = {Dist.CLIENT}, bus = EventBusSubscriber.Bus.MOD)
 public class TensuraMfNeoForgeClient {
 
     @SubscribeEvent

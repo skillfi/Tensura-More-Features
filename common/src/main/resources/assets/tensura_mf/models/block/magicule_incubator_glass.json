@@ -1,0 +1,101 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"texture_size": [128, 128],
+	"textures": {
+		"1": "tensura_mf:block/magicule_incubator_bottom",
+		"particle": "tensura_mf:block/magicule_incubator_bottom"
+	},
+	"elements": [
+		{
+			"name": "connector",
+			"from": [7, 0, 16],
+			"to": [9, 16, 18],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 17]},
+			"faces": {
+				"north": {"uv": [13.375, 0.25, 13.625, 3.375], "texture": "#1"},
+				"east": {"uv": [13.125, 0.25, 13.375, 3.375], "texture": "#1"},
+				"south": {"uv": [13.875, 0.25, 14.125, 3.375], "texture": "#1"},
+				"west": {"uv": [13.625, 0.25, 13.875, 3.375], "texture": "#1"},
+				"up": {"uv": [13.625, 0.25, 13.375, 0], "texture": "#1"},
+				"down": {"uv": [13.875, 0, 13.625, 0.25], "texture": "#1"}
+			}
+		},
+		{
+			"name": "fluid",
+			"from": [1, 0, 1],
+			"to": [15, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [10.75, 7.75, 12.5, 10.75], "texture": "#1"},
+				"east": {"uv": [9, 7.75, 10.75, 10.75], "texture": "#1"},
+				"south": {"uv": [14.25, 7.75, 16, 10.75], "texture": "#1"},
+				"west": {"uv": [12.5, 7.75, 14.25, 10.75], "texture": "#1"},
+				"up": {"uv": [12.5, 7.75, 10.75, 6], "texture": "#1"},
+				"down": {"uv": [14.25, 6, 12.5, 7.75], "texture": "#1"}
+			}
+		},
+		{
+			"name": "glass",
+			"from": [1, 0, 1],
+			"to": [15, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [2.125, 2.125, 4.25, 5], "texture": "#1"},
+				"east": {"uv": [0, 2.125, 2.125, 5], "texture": "#1"},
+				"south": {"uv": [6.375, 2.125, 8.5, 5], "texture": "#1"},
+				"west": {"uv": [4.25, 2.125, 6.375, 5], "texture": "#1"},
+				"up": {"uv": [4.25, 2.125, 2.125, 0], "texture": "#1"},
+				"down": {"uv": [4.25, 0, 2.125, 2.125], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"translation": [0, -4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"on_shelf": {
+			"scale": [0.75, 0.75, 0.75]
+		}
+	},
+	"groups": [
+		{
+			"name": "root",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [
+				{
+					"name": "pipe",
+					"origin": [8, 8, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [
+						{
+							"name": "connector",
+							"origin": [8, 8, 8],
+							"scope": 0,
+							"color": 0,
+							"children": [0]
+						}
+					]
+				},
+				{
+					"name": "fluid",
+					"origin": [8, 20, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [1]
+				},
+				{
+					"name": "glass",
+					"origin": [8, 8, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [2]
+				}
+			]
+		}
+	]
+}

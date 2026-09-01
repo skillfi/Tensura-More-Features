@@ -1,8 +1,5 @@
 package com.github.skillfi.tensura_mf.client;
 
-import com.github.skillfi.tensura_mf.client.block.MagiculeIncubatorRenderer;
-import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,12 +13,7 @@ import com.github.skillfi.tensura_mf.client.entity.monster.KijinRenderer;
 import com.github.skillfi.tensura_mf.registry.entity.MonsterEntityTypes;
 
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.BiConsumer;
 
@@ -43,6 +35,7 @@ public class TensuraMfClient {
                                             entityRenderers.accept(MonsterEntityTypes.DEATH_ONI.get(), KijinRenderer::new);
                                             entityRenderers.accept(MonsterEntityTypes.DIVINE_ONI.get(), KijinRenderer::new);
                                             entityRenderers.accept(MonsterEntityTypes.DIVINE_FIGHTER.get(), KijinRenderer::new);
+
                                          }
 
     public static void registerLivingEntityRenderer() {
@@ -57,7 +50,7 @@ public class TensuraMfClient {
     }
 
     public static void registerBlockRenderer() {
-        BlockEntityRendererRegistry.register(TensuraMfBlocksEntities.MAGICULE_INCUBATOR_BLOCK.get(), MagiculeIncubatorRenderer::new);
+
     }
 
 }

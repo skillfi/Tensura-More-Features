@@ -22,7 +22,7 @@ public class UkrainianProviderImpl extends TensuraMfLanguageProvider {
     public void addTranslations() {
         addEntities();
         addItems();
-        add(TensuraMfBlocks.MAGICULE_INCUBATOR_BLOCK.get(), "Інкубатор магікул");
+        add(TensuraMfBlocks.MAGICULE_INCUBATOR.get(), "Інкубатор магікул");
         add("item.tensura_mf.magicule_incubator", "Інкубатор магікул");
         add(TensuraMfBlocks.PIPE.get(), "Труба магічної енергії");
         add("item.tensura_mf.pipe", "Труба магічної енергії");

@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -25,7 +26,7 @@ public class TensuraMfPlatform {
     }
 
     @ExpectPlatform
-    public static <T extends net.minecraft.world.inventory.AbstractContainerMenu> Supplier<MenuType<T>> registerMenu(String id, Supplier<MenuType<T>> menuType) {
+    public static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenu(String id, Supplier<MenuType<T>> menuType) {
         throw new AssertionError();
     }
 

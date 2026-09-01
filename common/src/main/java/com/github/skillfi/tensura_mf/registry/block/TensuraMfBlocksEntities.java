@@ -12,13 +12,13 @@ import java.util.function.Supplier;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TensuraMfBlocksEntities {
 
-    public static final Supplier<BlockEntityType<MagiculeIncubatorBlockEntity>> MAGICULE_INCUBATOR_BLOCK;
+    public static final Supplier<BlockEntityType<MagiculeIncubatorBlockEntity>> MAGICULE_INCUBATOR;
 
     public static void init() {}
 
 
     static {
-        MAGICULE_INCUBATOR_BLOCK = registerBlockEntity("magicule_incubator", () -> BlockEntityType.Builder.of(MagiculeIncubatorBlockEntity::new, TensuraMfBlocks.MAGICULE_INCUBATOR_BLOCK.get()).build(null));
+        MAGICULE_INCUBATOR = registerBlockEntity("magicule_incubator", () -> BlockEntityType.Builder.of(MagiculeIncubatorBlockEntity::new, TensuraMfBlocks.MAGICULE_INCUBATOR.get()).build(null));
     }
 
     private static <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String id, Supplier<BlockEntityType<T>> block) {

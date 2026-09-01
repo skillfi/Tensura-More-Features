@@ -1,0 +1,92 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "tensura_mf:block/pipe",
+		"particle": "tensura_mf:block/pipe"
+	},
+	"elements": [
+		{
+			"name": "core",
+			"from": [7, 3, 7],
+			"to": [9, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2, 8]},
+			"faces": {
+				"north": {"uv": [4.75, 3, 5.25, 3.5], "texture": "#0"},
+				"east": {"uv": [4.25, 3, 4.75, 3.5], "texture": "#0"},
+				"south": {"uv": [5.75, 3, 6.25, 3.5], "texture": "#0"},
+				"west": {"uv": [5.25, 3, 5.75, 3.5], "texture": "#0"},
+				"up": {"uv": [5.25, 3, 4.75, 2.5], "texture": "#0"},
+				"down": {"uv": [5.75, 2.5, 5.25, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "pipe_right",
+			"from": [9, 3, 7],
+			"to": [16, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12.5, 2, 8]},
+			"faces": {
+				"north": {"uv": [4.75, 0.5, 6.5, 1], "texture": "#0"},
+				"east": {"uv": [4.25, 0.5, 4.75, 1], "texture": "#0"},
+				"south": {"uv": [7, 0.5, 8.75, 1], "texture": "#0"},
+				"west": {"uv": [6.5, 0.5, 7, 1], "texture": "#0"},
+				"up": {"uv": [6.5, 0.5, 4.75, 0], "texture": "#0"},
+				"down": {"uv": [8.25, 0, 6.5, 0.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 0, 0.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 1.25, 0]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 1.25, 0]
+		},
+		"gui": {
+			"rotation": [-48, -46, 0],
+			"translation": [0, 1, 0]
+		},
+		"head": {
+			"translation": [0, 8.75, 0]
+		},
+		"fixed": {
+			"rotation": [66, -71, 0],
+			"translation": [0, 1.75, 0]
+		},
+		"on_shelf": {
+			"translation": [0, 1.25, 0]
+		}
+	},
+	"groups": [
+		{
+			"name": "pipe",
+			"origin": [8, 7, 7.5],
+			"scope": 0,
+			"color": 0,
+			"children": [
+				{
+					"name": "core",
+					"origin": [8, 7, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [0]
+				},
+				{
+					"name": "pipe_right",
+					"origin": [8, 7, 8],
+					"scope": 0,
+					"color": 0,
+					"children": [1]
+				}
+			]
+		}
+	]
+}

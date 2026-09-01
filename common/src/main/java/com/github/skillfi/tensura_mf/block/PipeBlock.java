@@ -1,5 +1,6 @@
 package com.github.skillfi.tensura_mf.block;
 
+import com.github.skillfi.tensura_mf.api.energy.MagicEnergyStorage;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +68,7 @@ public class PipeBlock extends Block {
 
     private static boolean connectsTo(BlockGetter level, BlockPos pos) {
         if (level.getBlockState(pos).getBlock() instanceof PipeBlock) return true;
-        return level.getBlockEntity(pos) instanceof com.github.skillfi.tensura_mf.api.energy.MagicEnergyStorage;
+        return level.getBlockEntity(pos) instanceof MagicEnergyStorage;
     }
 
     public static BooleanProperty property(Direction direction) {

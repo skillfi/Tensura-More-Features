@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 500,
+  "input": {
+    "item": "minecraft:iron_ore"
+  },
+  "magicAmount": 800,
+  "output": {
+    "count": 1,
+    "id": "tensura:magic_ore_block"
+  }
+}

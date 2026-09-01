@@ -1,4 +1,7 @@
 {
+  "block.tensura_mf.magicule_incubator": "Інкубатор магікул",
+  "block.tensura_mf.pipe": "Труба магічної енергії",
+  "container.tensura_mf.magicule_incubator": "Інкубатор магікул",
   "entity.tensura_mf.death_oni": "Оні Смерті",
   "entity.tensura_mf.divine_fighter": "Божественний Боєць",
   "entity.tensura_mf.divine_oni": "Божественний Оні",
@@ -11,7 +14,9 @@
   "item.tensura_mf.divine_fighter_spawn_egg": "Яйце виклику Божественного Бійця",
   "item.tensura_mf.divine_oni_spawn_egg": "Яйце виклику Божественного Оні",
   "item.tensura_mf.kijin_spawn_egg": "Яйце виклику Кіджина",
+  "item.tensura_mf.magicule_incubator": "Інкубатор магікул",
   "item.tensura_mf.mystic_oni_spawn_egg": "Яйце виклику Містичного Оні",
+  "item.tensura_mf.pipe": "Труба магічної енергії",
   "item.tensura_mf.spirit_oni_spawn_egg": "Яйце виклику Духовного Оні",
   "item.tensura_mf.wicked_oni_spawn_egg": "Яйце виклику Злого Оні"
 }
