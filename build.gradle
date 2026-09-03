@@ -299,6 +299,7 @@ subprojects {
 
     if (!project.name.endsWith("common")) {
         processResources {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             def placeholders = [
                     version              : project.version,
                     mod_id               : "$archives_name",

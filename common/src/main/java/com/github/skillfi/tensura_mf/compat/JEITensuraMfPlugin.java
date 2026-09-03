@@ -37,6 +37,6 @@ public class JEITensuraMfPlugin implements IModPlugin {
     }
 
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MagiculeIncubatorScreen.class, 135, 49, 26, 26, MagicIncubationRecipeCategory.MAGIC_INCUBATION_RECIPE_TYPE);
+        registration.addRecipeClickArea(MagiculeIncubatorScreen.class, 87, 9, 30, 14, MagicIncubationRecipeCategory.MAGIC_INCUBATION_RECIPE_TYPE);
     }
 }

@@ -25,10 +25,10 @@ public class TensuraMfRecipeProvider extends RecipeProvider {
     }
 
     private void magicIncubation(RecipeOutput recipeOutput) {
-        magicIncubation(recipeOutput, TensuraBlocks.Items.MAGIC_ORE_BLOCK.get().getDefaultInstance(), Items.IRON_ORE.asItem(), 800, 500);
+        magicIncubation(recipeOutput, TensuraBlocks.Items.MAGIC_ORE.get().getDefaultInstance(), Items.IRON_ORE.asItem(), 800.0F, 500);
     }
 
-    protected static void magicIncubation(RecipeOutput recipeOutput, ItemStack output, Item ingredient, int amount, int incubationTick) {
+    protected static void magicIncubation(RecipeOutput recipeOutput, ItemStack output, Item ingredient, Float amount, int incubationTick) {
         MagicIncubationRecipe.Builder.of(output).requires(Ingredient.of(ingredient)).magicInput(amount).incubationTick(incubationTick).build(recipeOutput);
     }
 }

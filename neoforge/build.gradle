@@ -8,6 +8,7 @@ loom {
             // NeoForge використовує інші властивості, ніж Fabric
             property("neoforge.logging.markers", "REGISTRIES")
             programArgs "--all", "--mod", "tensura_mf"
+            programArgs '--existing-mod', 'tensura'
             programArgs "--output", project(':common').file('src/generated/resources').absolutePath
             programArgs "--existing", project(':common').file('src/main/resources').absolutePath
         }

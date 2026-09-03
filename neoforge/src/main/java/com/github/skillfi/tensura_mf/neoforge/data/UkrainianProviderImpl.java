@@ -27,6 +27,7 @@ public class UkrainianProviderImpl extends TensuraMfLanguageProvider {
         add(TensuraMfBlocks.PIPE.get(), "Труба магічної енергії");
         add("item.tensura_mf.pipe", "Труба магічної енергії");
         add("container.tensura_mf.magicule_incubator", "Інкубатор магікул");
+        add("analysis.tensura_mf.magic_energy", "Магічна енергія: %s");
     }
 
     private void addEntities() {

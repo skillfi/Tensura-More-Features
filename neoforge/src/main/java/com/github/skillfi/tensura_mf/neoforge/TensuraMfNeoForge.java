@@ -62,8 +62,8 @@ public final class TensuraMfNeoForge {
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper helper = event.getExistingFileHelper();
-        generator.addProvider(event.includeClient(), new TensuraMfItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new TensuraMfBlockStateProvider(output, helper));
+        generator.addProvider(event.includeClient(), new TensuraMfItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new EnglishProviderImpl(output));
         generator.addProvider(event.includeClient(), new UkrainianProviderImpl(output));
         generator.addProvider(event.includeServer(), new TensuraMfEntityTypeTagProvider(output, lookupProvider, helper));

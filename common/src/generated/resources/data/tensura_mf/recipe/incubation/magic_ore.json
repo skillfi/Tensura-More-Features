@@ -4,9 +4,9 @@
   "input": {
     "item": "minecraft:iron_ore"
   },
-  "magicAmount": 800,
+  "magicAmount": 800.0,
   "output": {
     "count": 1,
-    "id": "tensura:magic_ore_block"
+    "id": "tensura:magic_ore"
   }
 }

@@ -1,8 +1,0 @@
-{
-  "parent": "tensura_mf:block/magicule_incubator",
-  "textures": {
-    "0": "tensura_mf:block/magicule_incubator_bottom",
-    "1": "tensura_mf:block/magicule_incubator_top",
-    "particle": "minecraft:block/obsidian"
-  }
-}

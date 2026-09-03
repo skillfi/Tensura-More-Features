@@ -1,10 +1,13 @@
 package com.github.skillfi.tensura_mf.block;
 
+import com.github.skillfi.tensura_mf.api.energy.Network;
 import com.github.skillfi.tensura_mf.block.part.IncubatorPart;
 import com.github.skillfi.tensura_mf.block.part.TensuraMfBlockParts;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
+import com.github.skillfi.tensura_mf.storage.INetwork;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import com.mojang.serialization.MapCodec;
-import com.github.skillfi.tensura_mf.block.entity.MagiculeIncubatorBlockEntity;
+import com.github.skillfi.tensura_mf.block.entity.MagicIncubatorBlockEntity;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.core.BlockPos;
@@ -12,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,13 +49,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.function.ToIntFunction;
 
 import static net.minecraft.core.Direction.NORTH;
 
-public class MagiculeIncubatorBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<MagiculeIncubatorBlock> CODEC = simpleCodec( MagiculeIncubatorBlock::new);
+public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+    public static final MapCodec<MagicIncubatorBlock> CODEC = simpleCodec( MagicIncubatorBlock::new);
     public static final DirectionProperty FACING;
     public static final BooleanProperty LIT;
     public static final BooleanProperty WATERLOGGED;
@@ -62,7 +65,7 @@ public class MagiculeIncubatorBlock extends BaseEntityBlock implements SimpleWat
     public static final VoxelShape GLASS;
     public static final VoxelShape GLASS_TOP;
 
-    public MagiculeIncubatorBlock(BlockBehaviour.Properties properties){
+    public MagicIncubatorBlock(BlockBehaviour.Properties properties){
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, NORTH)
                 .setValue(LIT, false).setValue(WATERLOGGED, false));
@@ -82,6 +85,7 @@ public class MagiculeIncubatorBlock extends BaseEntityBlock implements SimpleWat
 
             pLevel.blockUpdated(pPos, Blocks.AIR);
             pState.updateNeighbourShapes(pLevel, pPos, 3);
+
         }
     }
 
@@ -207,12 +211,12 @@ public class MagiculeIncubatorBlock extends BaseEntityBlock implements SimpleWat
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return blockState.getValue(PART) == IncubatorPart.BASE ? new MagiculeIncubatorBlockEntity(blockPos, blockState) : null;
+        return blockState.getValue(PART) == IncubatorPart.BASE ? new MagicIncubatorBlockEntity(blockPos, blockState) : null;
     }
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return state.getValue(PART) == IncubatorPart.BASE ? createTickerHelper(type, TensuraMfBlocksEntities.MAGICULE_INCUBATOR.get(), MagiculeIncubatorBlockEntity::tick) : null;
+        return state.getValue(PART) == IncubatorPart.BASE ? createTickerHelper(type, TensuraMfBlocksEntities.MAGICULE_INCUBATOR.get(), MagicIncubatorBlockEntity::tick) : null;
     }
 
     @Override
@@ -243,7 +247,7 @@ public class MagiculeIncubatorBlock extends BaseEntityBlock implements SimpleWat
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof MagiculeIncubatorBlockEntity incubator) {
+        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof MagicIncubatorBlockEntity incubator) {
             Containers.dropContents(level, pos, incubator);
             level.removeBlockEntity(pos);
         }

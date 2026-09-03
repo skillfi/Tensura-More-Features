@@ -1,4 +1,5 @@
 {
+  "analysis.tensura_mf.magic_energy": "Magic Energy: %s",
   "block.tensura_mf.magicule_incubator": "Magicule Incubator",
   "block.tensura_mf.pipe": "Magic Energy Pipe",
   "container.tensura_mf.magicule_incubator": "Magicule Incubator",

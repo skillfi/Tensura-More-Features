@@ -1,23 +1,31 @@
 package com.github.skillfi.tensura_mf.block.entity;
 
-import com.github.skillfi.tensura_mf.block.MagiculeIncubatorBlock;
+import com.github.skillfi.tensura_mf.api.energy.IMagic;
+import com.github.skillfi.tensura_mf.api.energy.IPipe;
+import com.github.skillfi.tensura_mf.api.energy.IReceiver;
+import com.github.skillfi.tensura_mf.api.energy.Network;
+import com.github.skillfi.tensura_mf.block.MagicIncubatorBlock;
+import com.github.skillfi.tensura_mf.event.TensuraMfBlockEvents;
 import com.github.skillfi.tensura_mf.recipe.input.MagicIncubationRecipeInput;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import com.github.skillfi.tensura_mf.api.energy.MagicEnergyStorage;
-import com.github.skillfi.tensura_mf.block.PipeBlock;
 import com.github.skillfi.tensura_mf.registry.recipe.TensuraMfRecipes;
-import io.github.manasmods.tensura.block.KilnBlock;
+import dev.architectury.event.EventResult;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
@@ -29,13 +37,13 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import com.github.skillfi.tensura_mf.menu.MagiculeIncubatorMenu;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
+import java.util.*;
 
-public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity implements WorldlyContainer, StackedContentsCompatible, IReceiver {
     public static final String INCUBATION_PROGRESS = "magic_incubator.incubation_progress";
     public static final String MAX_INCUBATION_PROGRESS = "kiln.magic";
     public static final String MAGIC_ENERGY = "kiln.fuel";
@@ -48,7 +56,7 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
     public static final int INCUBATION_SLOT_IDX = 3;
     public static final int MAX_INCUBATION_SLOT_IDX = 4;
     public static final int MAX_MAGIC_MATERIAL_AMOUNT = 1000;
-    public static final int CONTAINER_DATA_SIZE = 5;
+    public static final int CONTAINER_DATA_SIZE = 3;
     private ItemStack lastInputStack = ItemStack.EMPTY;
     public static final int INVENTORY_SIZE = 2;
     @Getter
@@ -56,20 +64,18 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
     @Getter
     private int maxIncubationProgress;
     @Getter
-    private int magicEnergy;
+    private Float magicEnergy;
     @Getter
-    private int maxMagicEnergy;
+    private Float maxMagicEnergy;
+    @Getter
+    public UUID id;
+    @Getter
+    public UUID ownerId;
     public final ContainerData containerData = new ContainerData() {
         private final int[] dataArray = new int[CONTAINER_DATA_SIZE];
         @Override
         public int get(int index) {
             switch (index){
-                case ENERGY_SLOT_IDX -> {
-                    return magicEnergy;
-                }
-                case MAX_ENERGY_SLOT_IDX -> {
-                    return maxMagicEnergy;
-                }
                 case INCUBATION_SLOT_IDX -> {
                     return incubationProgress;
                 }
@@ -85,8 +91,6 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
         @Override
         public void set(int index, int value) {
             switch (index){
-                case ENERGY_SLOT_IDX -> magicEnergy = value;
-                case MAX_ENERGY_SLOT_IDX -> maxMagicEnergy = value;
                 case INCUBATION_SLOT_IDX -> incubationProgress = value;
                 case MAX_INCUBATION_SLOT_IDX -> maxIncubationProgress = value;
             }
@@ -100,12 +104,13 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
     };
 
 
-    public MagiculeIncubatorBlockEntity(BlockPos pos, BlockState state) {
-        super(TensuraMfBlocksEntities.MAGICULE_INCUBATOR.get(), pos, state,
-                MAX_MAGIC_MATERIAL_AMOUNT);
+    public MagicIncubatorBlockEntity(BlockPos pos, BlockState state) {
+        super(TensuraMfBlocksEntities.MAGICULE_INCUBATOR.get(), pos, state);
         this.incubationProgress = 0;
         this.maxIncubationProgress = 100;
-        maxMagicEnergy = 1000;
+        maxMagicEnergy = 1000.0F;
+        magicEnergy = 0.0F;
+        id = UUID.randomUUID();
     }
 
     @Override
@@ -118,27 +123,35 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
         return i >= 0 && i < getContainerSize() && canPlaceItem(i, itemStack);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, MagiculeIncubatorBlockEntity pEntity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, MagicIncubatorBlockEntity pEntity) {
         if (!level.isClientSide()) {
-            boolean incubationNeedsUpdate = pEntity.checkIncubationCache();
+            if (pEntity.networkId != null && pEntity.getOwner((ServerLevel) level)!=null) pEntity.receive(level, state, pos);
+
+            boolean incubationNeedsUpdate = !pEntity.getItem(0).isEmpty();
             if (incubationNeedsUpdate){
                 pEntity.checkIncubationRecipe(level.registryAccess());
             }
 
             pEntity.updateIncubationTime();
             if (pEntity.needUpdate) {
-                pEntity.setChanged();
+               pEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 2);
-                pEntity.needUpdate = false;
+                pEntity.resetDirty();
             }
-        } else if (state.getValue(MagiculeIncubatorBlock.LIT)) {
+        } else if (state.getValue(MagicIncubatorBlock.LIT)) {
             RandomSource random = level.random;
             if (random.nextFloat() < 0.11F) {
                 for(int i = 0; i < random.nextInt(2) + 2; ++i) {
-                    CampfireBlock.makeParticles(level, pos.above(2), state.getValue(MagiculeIncubatorBlock.LIT), false);
+                    CampfireBlock.makeParticles(level, pos.above(2), state.getValue(MagicIncubatorBlock.LIT), false);
                 }
             }
         }
+    }
+
+    @Override
+    public boolean receive(Level level, BlockState state, BlockPos pos) {
+        EventResult result = TensuraMfBlockEvents.ENERGY_RECEIVE.invoker().receive((ServerLevel) level, state, pos, 1, getNetworkId(), this);
+        return result.isTrue();
     }
 
     @Override
@@ -175,50 +188,52 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
         return items.size();
     }
 
-    public double getTick(Object object) {
-        return level == null ? 0 : level.getGameTime();
-    }
-
-    private boolean checkIncubationCache() {
-        ItemStack input = getItem(INPUT_SLOT_INDEX);
-        if (!ItemStack.isSameItemSameComponents(lastInputStack, input)) {
-            lastInputStack = input.copy();
-            return true;
-        }
-        return false;
-    }
-
     public void clearContent() {
         this.items.clear();
-        this.needUpdate = true;
+        this.markDirty();
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+        markDirty();
     }
 
     public void fillStackedContents(StackedContents pHelper) {
+        // TODO document why this method is empty
+    }
+
+    private boolean checkFuel(Float neededAmount){
+        return getMagicEnergy() >= neededAmount;
     }
 
     private void checkIncubationRecipe(HolderLookup.Provider provider){
-        if (((ItemStack)this.items.get(1)).isEmpty()) {
+        if ((this.items.get(0)).isEmpty()) {
             if (this.incubationProgress > 0) {
                 this.resetIncubationProgress();
             }
         } else if (this.level != null) {
-            MagicIncubationRecipeInput recipeInput = new MagicIncubationRecipeInput(this.items.get(1), getMagicEnergy());
+            MagicIncubationRecipeInput recipeInput = new MagicIncubationRecipeInput(this.items.get(0), getMagicEnergy());
             this.level.getRecipeManager().getRecipeFor(TensuraMfRecipes.MAGIC_INCUBATION_TYPE.get(), recipeInput, this.level)
                     .ifPresentOrElse((recipe)->{
-                        int incubationTick = (recipe.value()).getIncubationTick();
-                        if (this.maxIncubationProgress != incubationTick) {
-                            this.maxIncubationProgress = incubationTick;
+                        if (checkFuel(recipe.value().getMagicAmount())){
+                            int incubationTick = (recipe.value()).getIncubationTick();
+                            if (this.maxIncubationProgress != incubationTick) {
+                                this.maxIncubationProgress = incubationTick;
+                            }
+
+                            if (this.incubationProgress >= incubationTick) {
+                                (recipe.value()).assembleIncubation(this.level, this, provider);
+                                this.resetIncubationProgress();
+                            } else {
+                                ++this.incubationProgress;
+                            }
+
+                        } else {
+                            this.resetIncubationProgress();
                         }
 
-                        if (this.incubationProgress >= incubationTick) {
-                            (recipe.value()).assembleIncubation(this.level, this, provider);
-                            this.resetIncubationProgress();
-                        } else if ((Boolean)this.getBlockState().getValue(KilnBlock.BOOSTED)) {
-                            this.incubationProgress += 2;
-                        } else {
-                            ++this.incubationProgress;
-                        }
-                        this.needUpdate = true;
+                        this.markDirty();
+
                     }, this::resetIncubationProgress);
         }
     }
@@ -228,27 +243,9 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
             this.incubationProgress = 0;
             this.maxIncubationProgress = 100;
             this.lastInputStack = ItemStack.EMPTY;
-            this.needUpdate = true;
+            this.markDirty();
         }
 
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, MagiculeIncubatorBlockEntity incubator) {
-        if (incubator.checkIncubationCache()) incubator.needUpdate = true;
-        if (incubator.getMagicEnergy() < incubator.getMaxMagicEnergy()) {
-            incubator.pullEnergyFromPipeNetwork(level, pos);
-        }
-        if (incubator.needUpdate) {
-            incubator.setChanged();
-            level.sendBlockUpdated(pos, state, incubator.getBlockState(), 2);
-            incubator.needUpdate = false;
-        }
-    }
-
-    public void performIncubation(HolderLookup.Provider provider) {
-        if (this.level instanceof ServerLevel) {
-
-        }
     }
 
     private void updateIncubationTime() {
@@ -267,44 +264,44 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
             pStack.setCount(this.getMaxStackSize());
         }
 
-        this.needUpdate = true;
+        this.markDirty();
     }
 
     private void updateLitState(boolean lit) {
         if (this.level != null) {
             if (lit) {
-                if (!(Boolean)this.getBlockState().getValue(MagiculeIncubatorBlock.LIT)) {
-                    BlockState newState = (BlockState)this.getBlockState().setValue(MagiculeIncubatorBlock.LIT, true);
+                if (!this.getBlockState().getValue(MagicIncubatorBlock.LIT)) {
+                    BlockState newState = this.getBlockState().setValue(MagicIncubatorBlock.LIT, true);
                     this.level.setBlock(this.getBlockPos(), newState, 3);
                     setChanged(this.level, this.getBlockPos(), newState);
                 }
 
                 BlockPos above = this.worldPosition.above();
                 BlockState aboveState = this.level.getBlockState(above);
-                if (!aboveState.hasProperty(MagiculeIncubatorBlock.LIT)) {
+                if (!aboveState.hasProperty(MagicIncubatorBlock.LIT)) {
                     return;
                 }
 
-                if (!(Boolean)aboveState.getValue(MagiculeIncubatorBlock.LIT)) {
-                    BlockState newState = (BlockState)aboveState.setValue(MagiculeIncubatorBlock.LIT, true);
+                if (!aboveState.getValue(MagicIncubatorBlock.LIT)) {
+                    BlockState newState = aboveState.setValue(MagicIncubatorBlock.LIT, true);
                     this.level.setBlock(above, newState, 3);
                     setChanged(this.level, above, newState);
                 }
             } else {
-                if ((Boolean)this.getBlockState().getValue(MagiculeIncubatorBlock.LIT)) {
-                    BlockState newState = (BlockState)this.getBlockState().setValue(KilnBlock.LIT, false);
+                if (this.getBlockState().getValue(MagicIncubatorBlock.LIT)) {
+                    BlockState newState = this.getBlockState().setValue(MagicIncubatorBlock.LIT, false);
                     this.level.setBlock(this.getBlockPos(), newState, 3);
                     setChanged(this.level, this.getBlockPos(), newState);
                 }
 
                 BlockPos above = this.worldPosition.above();
                 BlockState aboveState = this.level.getBlockState(above);
-                if (!aboveState.hasProperty(MagiculeIncubatorBlock.LIT)) {
+                if (!aboveState.hasProperty(MagicIncubatorBlock.LIT)) {
                     return;
                 }
 
-                if ((Boolean)aboveState.getValue(MagiculeIncubatorBlock.LIT)) {
-                    BlockState newState = (BlockState)aboveState.setValue(MagiculeIncubatorBlock.LIT, false);
+                if (aboveState.getValue(MagicIncubatorBlock.LIT)) {
+                    BlockState newState = aboveState.setValue(MagicIncubatorBlock.LIT, false);
                     this.level.setBlock(above, newState, 3);
                     setChanged(this.level, above, newState);
                 }
@@ -312,42 +309,40 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
         }
     }
 
-    private void pullEnergyFromPipeNetwork(Level level, BlockPos origin) {
-        ArrayDeque<BlockPos> queue = new ArrayDeque<>();
-        HashSet<BlockPos> visited = new HashSet<>();
-        for (Direction direction : Direction.values()) {
-            BlockPos adjacent = origin.relative(direction);
-            if (level.getBlockState(adjacent).getBlock() instanceof PipeBlock) queue.add(adjacent);
-        }
-        int transferred = 0;
-        while (!queue.isEmpty() && transferred < 1) {
-            BlockPos pipePos = queue.removeFirst();
-            if (!visited.add(pipePos) || !(level.getBlockState(pipePos).getBlock() instanceof PipeBlock)) continue;
-            for (Direction direction : Direction.values()) {
-                BlockPos neighbor = pipePos.relative(direction);
-                if (level.getBlockState(neighbor).getBlock() instanceof PipeBlock) {
-                    if (!visited.contains(neighbor)) queue.addLast(neighbor);
-                    continue;
-                }
-                if (level.getBlockEntity(neighbor) instanceof MagicEnergyStorage source && source != this) {
-                    int room = getMaxMagicEnergy() - getMagicEnergy();
-                    int extracted = source.extractMagicEnergy(Math.min(1 - transferred, room));
-                    if (extracted > 0) {
-                        int accepted = receiveMagicEnergy(extracted);
-                        transferred += accepted;
-                    }
-                }
-            }
-        }
+    @Override
+    public void setMagicEnergy(Float magicEnergy) {
+        this.magicEnergy = magicEnergy;
+        markDirty();
     }
 
+    public LivingEntity getOwner(ServerLevel level){
+        if (ownerId!=null) level.getPlayerByUUID(ownerId);
+        return null;
+    }
+
+    // region Dirty State Management
+    public void markDirty() {
+        needUpdate = true;
+    }
+
+    @ApiStatus.Experimental
+    public void resetDirty() {
+        needUpdate = false;
+    }
+    // endregion
+
+
+    // region NBT Serialization
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider provider) {
         super.saveAdditional(nbt, provider);
         ContainerHelper.saveAllItems(nbt, this.items, provider);
         nbt.putInt(INCUBATION_PROGRESS, this.incubationProgress);
         nbt.putInt(MAX_INCUBATION_PROGRESS, this.maxIncubationProgress);
-        nbt.putInt(MAGIC_ENERGY, this.magicEnergy);
-        nbt.putInt(MAX_MAGIC_ENERGY, this.maxMagicEnergy);
+        nbt.putFloat(MAGIC_ENERGY, this.magicEnergy);
+        nbt.putFloat(MAX_MAGIC_ENERGY, this.maxMagicEnergy);
+        if (networkId!=null) nbt.putUUID("NetworkId", networkId);
+        if (id!=null) nbt.putUUID("BlockId", id);
+        if (ownerId!=null) nbt.putUUID("OwnerId", ownerId);
     }
 
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
@@ -356,13 +351,29 @@ public class MagiculeIncubatorBlockEntity extends AbstractEnergyBlockEntity impl
         ContainerHelper.loadAllItems(nbt, this.items, provider);
         incubationProgress = nbt.getInt(INCUBATION_PROGRESS);
         maxIncubationProgress = nbt.getInt(MAX_INCUBATION_PROGRESS);
-        magicEnergy = nbt.getInt(MAGIC_ENERGY);
-        maxMagicEnergy = nbt.getInt(MAX_MAGIC_ENERGY);
+        magicEnergy = nbt.getFloat(MAGIC_ENERGY);
+        maxMagicEnergy = nbt.getFloat(MAX_MAGIC_ENERGY);
+        if (nbt.hasUUID("NetworkId")) networkId = nbt.getUUID("NetworkId");
+        if (nbt.hasUUID("BlockId")) id = nbt.getUUID("BlockId");
+        if (nbt.hasUUID("OwnerId")) ownerId = nbt.getUUID("OwnerId");
+    }
+    // endregion
+
+    // region Network Synchronization
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        CompoundTag tag = super.getUpdateTag(provider);
-        this.saveAdditional(tag, provider);
-        return tag;
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
+
+    @Override
+    public void setNetworkId(UUID networkId) {
+        this.networkId = networkId;
+        markDirty();
+    }
+    // endregion
 }

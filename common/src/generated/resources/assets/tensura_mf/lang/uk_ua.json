@@ -1,4 +1,5 @@
 {
+  "analysis.tensura_mf.magic_energy": "Магічна енергія: %s",
   "block.tensura_mf.magicule_incubator": "Інкубатор магікул",
   "block.tensura_mf.pipe": "Труба магічної енергії",
   "container.tensura_mf.magicule_incubator": "Інкубатор магікул",

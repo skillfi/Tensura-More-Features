@@ -1,7 +1,7 @@
 package com.github.skillfi.tensura_mf.recipe;
 
 import com.github.skillfi.tensura_mf.TensuraMf;
-import com.github.skillfi.tensura_mf.block.entity.MagiculeIncubatorBlockEntity;
+import com.github.skillfi.tensura_mf.block.entity.MagicIncubatorBlockEntity;
 import com.github.skillfi.tensura_mf.recipe.input.MagicIncubationRecipeInput;
 import com.github.skillfi.tensura_mf.registry.recipe.TensuraMfRecipes;
 import com.mojang.serialization.Codec;
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput> {
     private final Ingredient input;
     private final int incubationTick;
-    private final int magicAmount;
+    private final Float magicAmount;
     private final ItemStack output;
 
     @Override
@@ -50,13 +50,14 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
         return this.getResultItem(provider);
     }
 
-    public void assembleIncubation(Level level, MagiculeIncubatorBlockEntity container, HolderLookup.Provider provider){
+    public void assembleIncubation(Level level, MagicIncubatorBlockEntity container, HolderLookup.Provider provider){
         incubation(level, container, magicAmount);
     }
 
-    private void incubation(Level level, MagiculeIncubatorBlockEntity container, int amount ){
-        container.setItem(1, getOutput());
-        container.setMagicEnergy(-amount);
+    private void incubation(Level level, MagicIncubatorBlockEntity container, Float amount ){
+        container.setItem(0, ItemStack.EMPTY);
+        container.setItem(1, getOutput().copy());
+        container.setMagicEnergy(container.getMagicEnergy()-amount);
     }
 
     @Override
@@ -81,10 +82,10 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
 
     @NoArgsConstructor
     public static class Serializer implements RecipeSerializer<MagicIncubationRecipe> {
-        private static final MapCodec<MagicIncubationRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+        private static final MapCodec<MagicIncubationRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(MagicIncubationRecipe::getInput),
                 Codec.INT.optionalFieldOf("incubationTick", 100).forGetter(MagicIncubationRecipe::getIncubationTick),
-                Codec.INT.optionalFieldOf("magicAmount", 0).forGetter(MagicIncubationRecipe::getMagicAmount),
+                Codec.FLOAT.optionalFieldOf("magicAmount", 0.0F).forGetter(MagicIncubationRecipe::getMagicAmount),
                 ItemStack.CODEC.fieldOf("output").forGetter(MagicIncubationRecipe::getOutput))
                 .apply(instance, MagicIncubationRecipe::new));
 
@@ -95,7 +96,7 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
         public @NotNull StreamCodec<RegistryFriendlyByteBuf, MagicIncubationRecipe> streamCodec() {
             return StreamCodec.composite(Ingredient.CONTENTS_STREAM_CODEC, MagicIncubationRecipe::getInput,
                     ByteBufCodecs.INT, MagicIncubationRecipe::getIncubationTick,
-                    ByteBufCodecs.INT, MagicIncubationRecipe::getMagicAmount,
+                    ByteBufCodecs.FLOAT, MagicIncubationRecipe::getMagicAmount,
                     ItemStack.STREAM_CODEC, MagicIncubationRecipe::getOutput,
                     MagicIncubationRecipe::new);
         }
@@ -112,7 +113,7 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
         private final ItemStack output;
         private Ingredient input;
         private int incubationTick;
-        private int magicAmount;
+        private Float magicAmount;
 
         public Builder requires(Ingredient ingredient) {
             this.input = ingredient;
@@ -124,7 +125,7 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
             return this;
         }
 
-        public Builder magicInput(int amount) {
+        public Builder magicInput(Float amount) {
             this.magicAmount = amount;
             return this;
         }
@@ -138,7 +139,7 @@ public class MagicIncubationRecipe implements Recipe<MagicIncubationRecipeInput>
         }
 
         public void build(RecipeOutput output, ResourceLocation id) {
-            SpecialRecipeBuilder.special((category) -> new MagicIncubationRecipe(this.input == null ? Ingredient.EMPTY : this.input, this.incubationTick,this.magicAmount, this.output)).save(output, id);
+            SpecialRecipeBuilder.special(category -> new MagicIncubationRecipe(this.input == null ? Ingredient.EMPTY : this.input, this.incubationTick,this.magicAmount, this.output)).save(output, id);
         }
 
         public void build(RecipeOutput output) {

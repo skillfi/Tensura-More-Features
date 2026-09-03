@@ -5,17 +5,21 @@ import com.github.skillfi.tensura_mf.menu.MagiculeIncubatorMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.manasmods.tensura.util.client.RenderHelper;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class MagiculeIncubatorScreen extends AbstractContainerScreen<MagiculeIncubatorMenu> {
     @Getter
     public static final ResourceLocation background = TensuraMf.create("textures/gui/magic_incubator/magic_incubator_gui.png");
+    private final HashMap<String, Object> guiState = MagiculeIncubatorMenu.guistate;
     public MagiculeIncubatorScreen(MagiculeIncubatorMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageWidth = 176;
@@ -41,9 +45,28 @@ public class MagiculeIncubatorScreen extends AbstractContainerScreen<MagiculeInc
     private void renderProgress(GuiGraphics graphics, int x, int y) {
         if (this.menu.isIncubating()) {
             int height = this.menu.getScaledProgress();
-            graphics.blit(this.getBackground(), x + 135, y + 72 - height, 24, this.imageHeight + 24 - height, 24, height);
+            graphics.blit(this.getBackground(), x + 135, y + 73 - height, 24, this.imageHeight + 24 - height, 24, height);
+        }
+    }
+
+    protected void renderTooltip(GuiGraphics graphics, int mX, int mY) {
+        super.renderTooltip(graphics, mX, mY);
+
+        if (this.isHovering(18, 5, 15, 76, mX, mY)) {
+            if ((this.menu).blockEntity.getMagicEnergy() > 0) {
+                float magicEnergy = (this.menu).blockEntity.getMagicEnergy();
+                String valueText = magicEnergy + "/" + (this.menu).blockEntity.getMaxMagicEnergy();
+                this.renderMaterialTooltip(graphics, mX, mY, valueText);
+            } else {
+                graphics.renderTooltip(this.font, Component.translatable("tooltip.tensura.kiln.empty"), mX, mY);
+            }
         }
 
+    }
+
+    private void renderMaterialTooltip(GuiGraphics graphics, int mouseX, int mouseY, String valueText) {
+        MutableComponent component = Component.translatable("tooltip.tensura_mf.magic_incubator.magic_energy", valueText).withStyle(ChatFormatting.BLUE);
+        graphics.renderTooltip(this.font, component, mouseX, mouseY);
     }
 
     private void renderEnergy(GuiGraphics graphics, int x, int y) {

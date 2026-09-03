@@ -1,38 +1,43 @@
 package com.github.skillfi.tensura_mf.menu;
 
-import com.github.skillfi.tensura_mf.block.entity.MagiculeIncubatorBlockEntity;
+import com.github.skillfi.tensura_mf.block.entity.MagicIncubatorBlockEntity;
 import com.github.skillfi.tensura_mf.registry.menu.TensuraMfMenus;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class MagiculeIncubatorMenu extends AbstractContainerMenu {
-    public final MagiculeIncubatorBlockEntity blockEntity;
+    public static final HashMap<String, Object> guistate = new HashMap<>();
+    public final MagicIncubatorBlockEntity blockEntity;
     private final Container container;
     private final ContainerData data;
     private final Player player;
 
-    public MagiculeIncubatorMenu(int id, Inventory inv, MagiculeIncubatorBlockEntity blockEntity, Container container, ContainerData containerData) {
+    public MagiculeIncubatorMenu(int id, Inventory inv, MagicIncubatorBlockEntity blockEntity, Container container, ContainerData containerData) {
         super(TensuraMfMenus.MAGICULE_INCUBATOR.get(), id);
         this.container = container;
         this.data = containerData;
         this.player = inv.player;
         this.blockEntity = blockEntity;
-        this.addSlot(new Slot(container, MagiculeIncubatorBlockEntity.INPUT_SLOT_INDEX, 139, 15));
-        this.addSlot(new Slot(container, MagiculeIncubatorBlockEntity.OUTPUT_SLOT_INDEX, 139, 53));
+        this.addSlot(new Slot(container, MagicIncubatorBlockEntity.INPUT_SLOT_INDEX, 139, 15));
+        this.addSlot(new Slot(container, MagicIncubatorBlockEntity.OUTPUT_SLOT_INDEX, 139, 53));
         this.addPlayerInventory(inv);
         this.addPlayerHotbar(inv);
-        checkContainerSize(container, MagiculeIncubatorBlockEntity.INVENTORY_SIZE);
+        checkContainerSize(container, MagicIncubatorBlockEntity.INVENTORY_SIZE);
     }
 
     public static MagiculeIncubatorMenu createMenu(int i, Inventory inventory, FriendlyByteBuf friendlyByteBuf) {
-        MagiculeIncubatorBlockEntity entity = (MagiculeIncubatorBlockEntity) inventory.player.level()
+        MagicIncubatorBlockEntity entity = (MagicIncubatorBlockEntity) inventory.player.level()
                 .getBlockEntity(friendlyByteBuf.readBlockPos());
-        return new MagiculeIncubatorMenu(i, inventory, entity, entity.getContainer(), entity.getContainerData());
+        return new MagiculeIncubatorMenu(i, inventory, entity, new SimpleContainer(MagicIncubatorBlockEntity.INVENTORY_SIZE),
+                new SimpleContainerData(MagicIncubatorBlockEntity.CONTAINER_DATA_SIZE));
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
@@ -63,9 +68,9 @@ public class MagiculeIncubatorMenu extends AbstractContainerMenu {
     }
 
     public int getEnergyState() {
-        int progress = this.blockEntity.getMagicEnergy();
+        Float progress = this.blockEntity.getMagicEnergy();
         int progressArrowSize = 74;
-        return progress != 0 ? progress * progressArrowSize / this.blockEntity.getMaxMagicEnergy() : 0;
+        return progress != 0 ? (int) (progress * progressArrowSize / this.blockEntity.getMaxMagicEnergy()) : 0;
     }
 
     @Override public @NotNull ItemStack quickMoveStack(Player player, int index) {

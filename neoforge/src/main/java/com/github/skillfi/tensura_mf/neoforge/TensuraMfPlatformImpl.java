@@ -1,6 +1,5 @@
 package com.github.skillfi.tensura_mf.neoforge;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;

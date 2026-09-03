@@ -1,7 +1,10 @@
 package com.github.skillfi.tensura_mf;
 
 import com.github.skillfi.tensura_mf.config.TensuraMfConfigs;
+import com.github.skillfi.tensura_mf.handler.BlockHandlers;
+import com.github.skillfi.tensura_mf.handler.TensuraMfHandlers;
 import com.github.skillfi.tensura_mf.registry.TensuraMfRegistry;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +21,9 @@ public final class TensuraMf {
         // Write common init code here.
         TensuraMfConfigs.init();
         TensuraMfRegistry.init();
+        TensuraMfStorages.init();
+        BlockHandlers.init();
+        TensuraMfHandlers.init();
 
     }
 

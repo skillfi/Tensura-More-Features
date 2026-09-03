@@ -51,6 +51,7 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
 
     private void tooltips() {
         add("tooltip.tensura_mf.magic_incubator.magic_energy", "Magic Energy: %s");
+        add("analysis.tensura_mf.magic_energy", "Magic Energy: %s");
         add("tensura_mf.jei.incubating.title", "Incubating");
     }
 

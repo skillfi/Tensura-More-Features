@@ -72,12 +72,12 @@ public class MagicIncubationRecipeCategory implements IRecipeCategory<MagicIncub
         }
     }
 
-    public int getMoltenProgress(int amount) {
+    public int getMoltenProgress(float amount) {
         if (amount > 1000) {
             amount = 1000;
         }
 
-        return amount != 0 ? amount * 74 / 1000 : 0;
+        return amount != 0 ? (int) (amount * 74 / 1000) : 0;
     }
 
     public void getTooltip(ITooltipBuilder tooltip, MagicIncubationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
