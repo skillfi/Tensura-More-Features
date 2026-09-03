@@ -87,7 +87,7 @@ public class MagicEngineGeneratorBlock extends BaseEntityBlock {
 
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         VoxelShape voxelShape;
-        switch ((Direction)state.getValue(FACING)) {
+        switch (state.getValue(FACING)) {
             case NORTH -> voxelShape = SHAPE_NORTH;
             case SOUTH -> voxelShape = SHAPE_SOUTH;
             case WEST -> voxelShape = SHAPE_WEST;
@@ -104,24 +104,27 @@ public class MagicEngineGeneratorBlock extends BaseEntityBlock {
         return (state) -> state.getValue(ENABLED) ? 15 : 0;
     }
 
+    @Override
     public boolean isSignalSource(BlockState pState) {
         return true;
     }
 
+    @Override
     public int getSignal(BlockState pState, BlockGetter pBlockAccess, BlockPos pPos, Direction pSide) {
         return pState.getValue(ENABLED) ? 15 : 0;
     }
 
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(new Property[]{FACING}).add(new Property[]{ENABLED});
     }
 
     public @NotNull BlockState rotate(BlockState pState, Rotation pRot) {
-        return (BlockState)pState.setValue(FACING, pRot.rotate((Direction)pState.getValue(FACING)));
+        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
     }
 
     public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation((Direction)pState.getValue(FACING)));
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -141,8 +144,8 @@ public class MagicEngineGeneratorBlock extends BaseEntityBlock {
         } else if (this.isCreativeOnly() && !player.isCreative()) {
             return super.useWithoutItem(state, level, pos, player, blockHitResult);
         } else {
-            boolean current = (Boolean)state.getValue(ENABLED);
-            state = (BlockState)state.setValue(ENABLED, !current);
+            boolean current = state.getValue(ENABLED);
+            state = state.setValue(ENABLED, !current);
             level.setBlock(pos, state, 3);
             this.applyMagiculeModifier(level, pos, !current);
             BlockEntity var8 = level.getBlockEntity(pos);
@@ -151,7 +154,7 @@ public class MagicEngineGeneratorBlock extends BaseEntityBlock {
                 entity.setTracked(!current);
             }
 
-            level.playSound((Player)null, pos, !current ? SoundEvents.BEACON_ACTIVATE : SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1.0F, !current ? 0.6F : 0.5F);
+            level.playSound(null, pos, !current ? SoundEvents.BEACON_ACTIVATE : SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1.0F, !current ? 0.6F : 0.5F);
             level.gameEvent(player, !current ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
             if (player instanceof ServerPlayer) {
                 ServerPlayer serverPlayer = (ServerPlayer)player;

@@ -1,18 +1,13 @@
 package com.github.skillfi.tensura_mf.block.entity;
 
-import com.github.skillfi.tensura_mf.api.energy.IMagic;
-import com.github.skillfi.tensura_mf.api.energy.IPipe;
+import com.github.skillfi.tensura_mf.api.energy.INetworkEntry;
 import com.github.skillfi.tensura_mf.api.energy.Network;
-import com.github.skillfi.tensura_mf.event.TensuraMfBlockEvents;
+import com.github.skillfi.tensura_mf.api.energy.NetworkType;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import dev.architectury.event.EventResult;
 import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -28,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /** A pipe has no storage of its own; it moves one magic energy unit per network tick. */
-public class PipeBlockEntity extends BlockEntity implements IPipe {
+public class PipeBlockEntity extends BlockEntity implements INetworkEntry {
     private static final int TRANSFER_PER_TICK = 1;
     @Getter
     public UUID networkId = null;
@@ -40,10 +35,13 @@ public class PipeBlockEntity extends BlockEntity implements IPipe {
     public Map<UUID, List<Network>> network = new HashMap<>();
     @Getter
     public UUID ownerId;
+    @Getter
+    public NetworkType networkType;
 
     public PipeBlockEntity(BlockPos pos, BlockState state) {
         super(TensuraMfBlocksEntities.PIPE.get(), pos, state);
         id = UUID.randomUUID();
+        networkType = NetworkType.PIPE;
     }
 
     public static BlockEntityTicker<PipeBlockEntity> createTickerHelper() {
@@ -64,12 +62,17 @@ public class PipeBlockEntity extends BlockEntity implements IPipe {
     }
 
     public LivingEntity getOwner(ServerLevel level){
-        if (ownerId!=null) level.getPlayerByUUID(ownerId);
-        return null;
+        return ownerId == null ? null : level.getPlayerByUUID(ownerId);
     }
 
     public void setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
+        markDirty();
+    }
+
+    @Override
+    public void setNetworkType(NetworkType type) {
+        this.networkType = type;
         markDirty();
     }
 
@@ -88,12 +91,6 @@ public class PipeBlockEntity extends BlockEntity implements IPipe {
     public void setNetworkId(UUID id) {
         this.networkId = id;
         markDirty();
-    }
-
-    @Override
-    public boolean transfer(Level level, BlockState state, BlockPos pos) {
-        EventResult result = TensuraMfBlockEvents.ENERGY_TRANSFER.invoker().transfer((ServerLevel) level, state, pos, TRANSFER_PER_TICK, getNetworkId(), this);
-        return result.isTrue();
     }
 
     // region NBT Serialization

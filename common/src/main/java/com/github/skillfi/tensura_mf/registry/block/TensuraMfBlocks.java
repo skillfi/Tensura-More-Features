@@ -4,6 +4,7 @@ import com.github.skillfi.tensura_mf.TensuraMf;
 import com.github.skillfi.tensura_mf.block.MagicIncubatorBlock;
 import com.github.skillfi.tensura_mf.block.MagicEngineGeneratorBlock;
 import com.github.skillfi.tensura_mf.block.PipeBlock;
+import com.github.skillfi.tensura_mf.data.annotations.Language;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.DeferredSupplier;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -29,23 +30,41 @@ public class TensuraMfBlocks {
 
     public static final RegistrySupplier<Block> MAGICULE_INCUBATOR;
     public static final RegistrySupplier<Block> PIPE;
+    @Language.English("Bricks Magic Engine") @Language.Ukrainian("Цегляний магічний двигун")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> BRICKS_MAGIC_ENGINE;
+    @Language.English("Stone Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з кам'яної цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> STONE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Tuff Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з туфової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> TUFF_BRICKS_MAGIC_ENGINE;
+    @Language.English("Deepslate Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з цегли глибосланцю")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> DEEPSLATE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Mud Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з багнистої цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> MUD_BRICKS_MAGIC_ENGINE;
+    @Language.English("Prismarine Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з призмаринової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> PRISMARINE_BRICK_MAGIC_ENGINE;
+    @Language.English("Nether Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з незерської цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Red Nether Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з червоної незерської цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> RED_NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Polished Blackstone Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з цегли полірованого чорнокаменю")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> POLISHED_BLACKSTONE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Quartz Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з кварцової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> QUARTZ_BRICKS_MAGIC_ENGINE;
+    @Language.English("End Stone Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з ендернякової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> END_STONE_BRICKS_MAGIC_ENGINE;
+    @Language.English("Purpur Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з пурпурової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> PURPUR_BRICKS_MAGIC_ENGINE;
+    @Language.English("Low-Quality Magic Crystal Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з низькоякісної магічної кристалічної цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE;
+    @Language.English("Medium-Quality Magic Crystal Bricks Magic Engine") @Language.Ukrainian("Магічний двигун із середньоякісної магічної кристалічної цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> MEDIUM_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE;
+    @Language.English("High-Quality Magic Crystal Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з високоякісної магічної кристалічної цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> HIGH_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE;
+    @Language.English("Labyrinth Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з лабіринтової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> LABYRINTH_BRICKS_MAGIC_ENGINE;
+    @Language.English("Cream Labyrinth Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з кремової лабіринтової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> CREAM_LABYRINTH_BRICKS_MAGIC_ENGINE;
+    @Language.English("Dark Labyrinth Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з темної лабіринтової цегли")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> DARK_LABYRINTH_BRICKS_MAGIC_ENGINE;
 
     public static void init(){

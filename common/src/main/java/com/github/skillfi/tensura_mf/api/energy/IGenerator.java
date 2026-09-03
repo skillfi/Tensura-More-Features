@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.UUID;
 
 public interface IGenerator extends IMagic{
-    void generate(Level level, BlockState state, BlockPos blockPos);
+    void generate(Level level, BlockState state, BlockPos blockPos, UUID networkId);
     BlockPos getBlockPos();
     void setNetworkId(UUID networkId);
     LivingEntity getOwner(ServerLevel level);

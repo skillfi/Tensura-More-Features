@@ -1,17 +1,17 @@
 package com.github.skillfi.tensura_mf.block.entity;
 
-import com.github.skillfi.tensura_mf.api.energy.IMagic;
-import com.github.skillfi.tensura_mf.api.energy.IPipe;
 import com.github.skillfi.tensura_mf.api.energy.IReceiver;
 import com.github.skillfi.tensura_mf.api.energy.Network;
+import com.github.skillfi.tensura_mf.api.energy.NetworkType;
 import com.github.skillfi.tensura_mf.block.MagicIncubatorBlock;
 import com.github.skillfi.tensura_mf.event.TensuraMfBlockEvents;
 import com.github.skillfi.tensura_mf.recipe.input.MagicIncubationRecipeInput;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
 import com.github.skillfi.tensura_mf.registry.recipe.TensuraMfRecipes;
+import com.github.skillfi.tensura_mf.storage.INetwork;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import dev.architectury.event.EventResult;
 import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -71,6 +71,8 @@ public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity impleme
     public UUID id;
     @Getter
     public UUID ownerId;
+    @Getter
+    public NetworkType networkType;
     public final ContainerData containerData = new ContainerData() {
         private final int[] dataArray = new int[CONTAINER_DATA_SIZE];
         @Override
@@ -111,11 +113,18 @@ public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity impleme
         maxMagicEnergy = 1000.0F;
         magicEnergy = 0.0F;
         id = UUID.randomUUID();
+        networkType = NetworkType.RECEIVER;
     }
 
     @Override
     public int @NotNull [] getSlotsForFace(Direction direction) {
         return new int[]{INPUT_SLOT_INDEX, OUTPUT_SLOT_INDEX};
+    }
+
+    @Override
+    public void setNetworkType(NetworkType networkType) {
+        this.networkType = networkType;
+        markDirty();
     }
 
     @Override
@@ -125,7 +134,11 @@ public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity impleme
 
     public static void tick(Level level, BlockPos pos, BlockState state, MagicIncubatorBlockEntity pEntity) {
         if (!level.isClientSide()) {
-            if (pEntity.networkId != null && pEntity.getOwner((ServerLevel) level)!=null) pEntity.receive(level, state, pos);
+            INetwork iNetwork = TensuraMfStorages.getNetworkFrom(level);
+            if (iNetwork.isInNetwork(pos)) {
+                Network network1 = iNetwork.getNetwork(pos);
+                pEntity.receive(level, state, pos, network1.networkId);
+            }
 
             boolean incubationNeedsUpdate = !pEntity.getItem(0).isEmpty();
             if (incubationNeedsUpdate){
@@ -149,8 +162,8 @@ public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity impleme
     }
 
     @Override
-    public boolean receive(Level level, BlockState state, BlockPos pos) {
-        EventResult result = TensuraMfBlockEvents.ENERGY_RECEIVE.invoker().receive((ServerLevel) level, state, pos, 1, getNetworkId(), this);
+    public boolean receive(Level level, BlockState state, BlockPos pos, UUID networkId) {
+        EventResult result = TensuraMfBlockEvents.ENERGY_RECEIVE.invoker().receive((ServerLevel) level, state, pos, 1, networkId);
         return result.isTrue();
     }
 
@@ -311,13 +324,17 @@ public class MagicIncubatorBlockEntity extends AbstractEnergyBlockEntity impleme
 
     @Override
     public void setMagicEnergy(Float magicEnergy) {
-        this.magicEnergy = magicEnergy;
+        increaseMagicEnergy(1.0F);
         markDirty();
     }
 
+    public void increaseMagicEnergy(Float magicEnergy){
+        this.magicEnergy += magicEnergy;
+        markDirty();
+    };
+
     public LivingEntity getOwner(ServerLevel level){
-        if (ownerId!=null) level.getPlayerByUUID(ownerId);
-        return null;
+        return ownerId == null ? null : level.getPlayerByUUID(ownerId);
     }
 
     // region Dirty State Management

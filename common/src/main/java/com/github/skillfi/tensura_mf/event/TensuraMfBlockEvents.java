@@ -18,7 +18,6 @@ public class TensuraMfBlockEvents {
     public static Event<EnergyTickEvent> ENERGY_TICK_PRE = EventFactory.createLoop(new EnergyTickEvent[0]);
     public static Event<EnergyTickEvent> ENERGY_TICK_POST = EventFactory.createLoop(new EnergyTickEvent[0]);
     public static Event<EnergyReceiveEvent> ENERGY_RECEIVE = EventFactory.createEventResult(new EnergyReceiveEvent[0]);
-    public static Event<EnergyTransferEvent> ENERGY_TRANSFER = EventFactory.createEventResult(new EnergyTransferEvent[0]);
     public static Event<EnergyGenerateEvent> ENERGY_GENERATE = EventFactory.createLoop(new EnergyGenerateEvent[0]);
     public static Event<EnergyCheckEvent> ENERGY_CHECK = EventFactory.createCompoundEventResult(new EnergyCheckEvent[0]);
     public static Event<EnergyConsumptionEvent> ENERGY_CONSUMPTION = EventFactory.createLoop(new EnergyConsumptionEvent[0]);
@@ -31,26 +30,21 @@ public class TensuraMfBlockEvents {
 
     @FunctionalInterface
     public interface EnergyReceiveEvent {
-        EventResult receive(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId, MagicIncubatorBlockEntity blockEntity);
-    }
-
-    @FunctionalInterface
-    public interface EnergyTransferEvent {
-        EventResult transfer(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId, PipeBlockEntity pipeBlockEntity);
+        EventResult receive(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId);
     }
 
     @FunctionalInterface
     public interface EnergyGenerateEvent {
-        void generate(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId, MagicEngineBlockEntity blockEntity);
+        void generate(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId);
     }
 
     @FunctionalInterface
     public interface EnergyCheckEvent {
-        CompoundEventResult<Float> get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId, LivingEntity livingEntity);
+        CompoundEventResult<Float> get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId);
     }
 
     @FunctionalInterface
     public interface EnergyConsumptionEvent {
-        void get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId, Float amount, LivingEntity livingEntity);
+        void get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId, Float amount);
     }
 }

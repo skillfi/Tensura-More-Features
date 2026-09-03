@@ -10,12 +10,12 @@ public class TensuraMfStorages {
         NetworkStorage.init();
     }
 
-    public static INetwork getNetworkFrom(@NonNull LivingEntity entity) {
-        if (entity == null) {
-            throw new NullPointerException("entity is marked non-null but is null");
+    public static INetwork getNetworkFrom(@NonNull Level level) {
+        if (level == null) {
+            throw new NullPointerException("level is marked non-null but is null");
         } else {
             StorageKeyGuard.requireInitialized();
-            INetwork storage = entity.manasCore$getStorage(NetworkStorage.getKey());
+            INetwork storage = level.manasCore$getStorage(NetworkStorage.getKey());
             return storage;
         }
     }

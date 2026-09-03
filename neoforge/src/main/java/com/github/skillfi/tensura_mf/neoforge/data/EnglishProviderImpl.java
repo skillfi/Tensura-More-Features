@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
@@ -22,12 +23,28 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
     public void addTranslations() {
         addEntities();
         addItems();
+        addBlocks();
         add(TensuraMfBlocks.MAGICULE_INCUBATOR.get(), "Magicule Incubator");
         add("item.tensura_mf.magicule_incubator", "Magicule Incubator");
         add(TensuraMfBlocks.PIPE.get(), "Magic Energy Pipe");
         add("item.tensura_mf.pipe", "Magic Energy Pipe");
         add("container.tensura_mf.magicule_incubator", "Magicule Incubator");
         tooltips();
+    }
+
+    private void addBlocks() {
+        for (Field field : TensuraMfBlocks.class.getFields()) {
+            Language.English annotation = field.getAnnotation(Language.English.class);
+            if (annotation == null) continue;
+            try {
+                Object value = field.get(null);
+                if (value instanceof Supplier<?> supplier && supplier.get() instanceof Block block) {
+                    add(block, annotation.value());
+                }
+            } catch (IllegalAccessException ignored) {
+                // Ignore inaccessible registry fields.
+            }
+        }
     }
 
     private void addEntities(){

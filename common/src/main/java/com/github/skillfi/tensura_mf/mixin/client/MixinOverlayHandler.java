@@ -1,7 +1,9 @@
 package com.github.skillfi.tensura_mf.mixin.client;
 
-import com.github.skillfi.tensura_mf.api.energy.IGenerator;
+import com.github.skillfi.tensura_mf.api.energy.INetworkEntry;
 import com.github.skillfi.tensura_mf.block.entity.MagicEngineBlockEntity;
+import com.github.skillfi.tensura_mf.storage.INetwork;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -32,13 +34,15 @@ public abstract class MixinOverlayHandler {
     @Inject(method = "renderBlockAnalysis", at = @At("TAIL"))
     private static void tensuraMf$renderMagicEnergy(BlockState blockState, BlockPos blockPos, CallbackInfo callbackInfo) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (!(blockEntity instanceof MagicEngineBlockEntity generator)) {
+        if (!(blockEntity instanceof INetworkEntry iNetworkEntry)) {
             return;
         }
+        INetwork iNetwork = TensuraMfStorages.getNetworkFrom(level);
+        Float magicEnergy = iNetwork.getMagicEnergy(iNetworkEntry.getNetworkId());
 
         graphics.drawString(
                 font,
-                Component.translatable("analysis.tensura_mf.magic_energy", generator.getMagicEnergy()),
+                Component.translatable("analysis.tensura_mf.magic_energy", magicEnergy),
                 7,
                 120,
                 0xFFFFFF

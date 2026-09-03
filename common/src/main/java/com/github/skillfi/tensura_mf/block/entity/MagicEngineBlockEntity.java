@@ -1,22 +1,19 @@
 package com.github.skillfi.tensura_mf.block.entity;
 
 import com.github.skillfi.tensura_mf.api.energy.IGenerator;
-import com.github.skillfi.tensura_mf.api.energy.IMagic;
-import com.github.skillfi.tensura_mf.api.energy.IPipe;
 import com.github.skillfi.tensura_mf.api.energy.Network;
+import com.github.skillfi.tensura_mf.api.energy.NetworkType;
 import com.github.skillfi.tensura_mf.block.MagicEngineGeneratorBlock;
 import com.github.skillfi.tensura_mf.event.TensuraMfBlockEvents;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import dev.architectury.event.EventResult;
+import com.github.skillfi.tensura_mf.storage.INetwork;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import io.github.manasmods.tensura.util.MagicEngineHelper;
 import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,7 +21,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
@@ -32,9 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /** MagicEngine block entity replacement that exposes its Magicule buffer to Pipe networks. */
@@ -43,6 +36,9 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
     private static final int GENERATION_PER_TICK = 1;
     public static final String MAGIC_ENERGY = "MagicEnergy";
     public static final String MAX_MAGIC_ENERGY = "MaxMagicEnergy";
+    public static final String NETWORK_ID = "NetworkId";
+    public static final String OWNER_ID = "Owner";
+    public static final String BLOCK_ID = "BlockId";
     public int spin;
     private boolean tracked;
     private static final NonNullList<ItemStack> EMPTY_ITEMS = NonNullList.create();
@@ -54,13 +50,15 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
     public UUID id;
     @Getter
     public UUID ownerId;
-
+    @Getter
+    public NetworkType networkType;
     public MagicEngineBlockEntity(BlockPos pos, BlockState state) {
         super(TensuraMfBlocksEntities.MAGIC_ENGINE.get(), pos, state);
         this.tracked = false;
         this.magicEnergy = Float.NaN;
         this.maxMagicEnergy = 1000.0F;
         this.id = UUID.randomUUID();
+        this.networkType = NetworkType.GENERATOR;
     }
 
     public void setLevel(Level level) {
@@ -68,6 +66,12 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
         if (!level.isClientSide() && this.getBlockState().getValue(MagicEngineGeneratorBlock.ENABLED)) {
             this.setTracked(true);
         }
+    }
+
+    @Override
+    public void setNetworkType(NetworkType networkType) {
+        this.networkType = networkType;
+        markDirty();
     }
 
     public LivingEntity getOwner(ServerLevel level){
@@ -115,9 +119,16 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
 
     public static void serverTick(Level level, BlockPos pos, BlockState state,
                                   MagicEngineBlockEntity engine) {
-        if (state.hasProperty(MagicEngineGeneratorBlock.ENABLED)
-                && state.getValue(MagicEngineGeneratorBlock.ENABLED) && engine.networkId != null) {
-            engine.generate(level, state, pos);
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        INetwork iNetwork = TensuraMfStorages.getNetworkFrom(level);
+
+
+        if (iNetwork.isInNetwork(pos)
+                && state.hasProperty(MagicEngineGeneratorBlock.ENABLED)
+                && state.getValue(MagicEngineGeneratorBlock.ENABLED)) {
+            Network network1 = iNetwork.getNetwork(pos);
+            engine.generate(level, state, pos, network1.networkId);
         }
 
         if (engine.needUpdate) {
@@ -140,8 +151,8 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
     }
 
     @Override
-    public void generate(Level level, BlockState state, BlockPos blockPos) {
-        TensuraMfBlockEvents.ENERGY_GENERATE.invoker().generate((ServerLevel) level, state, blockPos, GENERATION_PER_TICK, getNetworkId(), this);
+    public void generate(Level level, BlockState state, BlockPos blockPos, UUID networkId) {
+        TensuraMfBlockEvents.ENERGY_GENERATE.invoker().generate((ServerLevel) level, state, blockPos, GENERATION_PER_TICK, networkId);
     }
 
     @Override
@@ -155,18 +166,18 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
         super.saveAdditional(nbt, provider);
         if (magicEnergy > 0) nbt.putFloat(MAGIC_ENERGY, this.magicEnergy);
         nbt.putFloat(MAX_MAGIC_ENERGY, this.maxMagicEnergy);
-        if (networkId!=null) nbt.putUUID("NetworkId", networkId);
-        if (id!=null) nbt.putUUID("BlockId", id);
-        if (ownerId!=null) nbt.putUUID("Owner", ownerId);
+        if (networkId!=null) nbt.putUUID(NETWORK_ID, networkId);
+        if (id!=null) nbt.putUUID(BLOCK_ID, id);
+        if (ownerId!=null) nbt.putUUID(OWNER_ID, ownerId);
     }
 
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         super.loadAdditional(nbt, provider);
         if (nbt.hasUUID(MAGIC_ENERGY)) magicEnergy = nbt.getFloat(MAGIC_ENERGY);
         maxMagicEnergy = nbt.getFloat(MAX_MAGIC_ENERGY);
-        if (nbt.hasUUID("NetworkId")) networkId = nbt.getUUID("NetworkId");
-        if (nbt.hasUUID("BlockId")) id = nbt.getUUID("BlockId");
-        if (nbt.hasUUID("Owner")) ownerId = nbt.getUUID("Owner");
+        if (nbt.hasUUID(NETWORK_ID)) networkId = nbt.getUUID(NETWORK_ID);
+        if (nbt.hasUUID(BLOCK_ID)) id = nbt.getUUID(BLOCK_ID);
+        if (nbt.hasUUID(OWNER_ID)) ownerId = nbt.getUUID(OWNER_ID);
     }
     // endregion
 
@@ -188,7 +199,7 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
     }
 
     @Override
-    public boolean receive(Level level, BlockState state, BlockPos blockPos) {
+    public boolean receive(Level level, BlockState state, BlockPos blockPos, UUID networkId) {
         return false;
     }
 
