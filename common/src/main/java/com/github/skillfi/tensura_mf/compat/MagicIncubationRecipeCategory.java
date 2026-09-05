@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class MagicIncubationRecipeCategory implements IRecipeCategory<MagicIncubationRecipe> {
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(TensuraMf.MOD_ID, "magic_incubator/incubation");
@@ -41,7 +42,7 @@ public class MagicIncubationRecipeCategory implements IRecipeCategory<MagicIncub
 
     public MagicIncubationRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 81);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TensuraBlocks.Items.MAGIC_ORE.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TensuraMfBlocks.Items.MAGICAL_INCUBATOR.get()));
     }
 
     public @NotNull RecipeType<MagicIncubationRecipe> getRecipeType() {
@@ -57,7 +58,13 @@ public class MagicIncubationRecipeCategory implements IRecipeCategory<MagicIncub
     }
 
     public void setRecipe(IRecipeLayoutBuilder builder, MagicIncubationRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 139, 15).addIngredients(recipe.getInput());
+        builder.addSlot(RecipeIngredientRole.INPUT, 139, 15).addItemStacks(Arrays.stream(recipe.getInput().getItems())
+                .map(stack -> {
+                    ItemStack countedStack = stack.copy();
+                    countedStack.setCount(recipe.getInputCount());
+                    return countedStack;
+                })
+                .toList());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 139, 53).addItemStack(recipe.getOutput());
     }
 
@@ -73,11 +80,11 @@ public class MagicIncubationRecipeCategory implements IRecipeCategory<MagicIncub
     }
 
     public int getMoltenProgress(float amount) {
-        if (amount > 1000) {
-            amount = 1000;
+        if (amount > 500000) {
+            amount = 500000;
         }
 
-        return amount != 0 ? (int) (amount * 74 / 1000) : 0;
+        return amount != 0 ? (int) (amount * 74 / 500000) : 0;
     }
 
     public void getTooltip(ITooltipBuilder tooltip, MagicIncubationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {

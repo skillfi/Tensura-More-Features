@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 583200,
+  "input": {
+    "item": "tensura:hihiirokane_ingot"
+  },
+  "inputCount": 8,
+  "magicAmount": 583200.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_helmet"
+  }
+}

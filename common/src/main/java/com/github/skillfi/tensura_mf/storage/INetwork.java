@@ -20,6 +20,7 @@ public interface INetwork {
     void setMagicEnergy(UUID networkId, Float magicEnergy);
     float getMagicEnergy(ServerLevel level, BlockState state, BlockPos pos, UUID networkId);
     float getMagicEnergy(UUID networkId);
+    float getMaxMagicEnergy(UUID networkId);
     void consumptionMagicEnergy(ServerLevel level, BlockState state, BlockPos pos, UUID networkId, float amount);
     boolean isInNetwork(BlockPos pos);
     Network getNetwork(BlockPos pos);

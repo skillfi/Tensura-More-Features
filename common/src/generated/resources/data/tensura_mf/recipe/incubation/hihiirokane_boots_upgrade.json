@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 291600,
+  "input": {
+    "item": "tensura:orichalcum_boots"
+  },
+  "magicAmount": 291600.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_boots"
+  }
+}

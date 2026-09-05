@@ -1,21 +1,20 @@
 package com.github.skillfi.tensura_mf.block;
 
-import com.github.skillfi.tensura_mf.api.energy.Network;
 import com.github.skillfi.tensura_mf.block.part.IncubatorPart;
 import com.github.skillfi.tensura_mf.block.part.TensuraMfBlockParts;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import com.github.skillfi.tensura_mf.storage.INetwork;
-import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import com.mojang.serialization.MapCodec;
 import com.github.skillfi.tensura_mf.block.entity.MagicIncubatorBlockEntity;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -41,6 +40,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.Containers;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -54,7 +54,7 @@ import java.util.function.ToIntFunction;
 import static net.minecraft.core.Direction.NORTH;
 
 public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<MagicIncubatorBlock> CODEC = simpleCodec( MagicIncubatorBlock::new);
+    public static final MapCodec<MagicIncubatorBlock> CODEC = simpleCodec( props -> new MagicIncubatorBlock(props, IncubatorType.NORMAL));
     public static final DirectionProperty FACING;
     public static final BooleanProperty LIT;
     public static final BooleanProperty WATERLOGGED;
@@ -64,11 +64,18 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
     private static final VoxelShape GLASS_SHAPE;
     public static final VoxelShape GLASS;
     public static final VoxelShape GLASS_TOP;
+    @Getter
+    private final IncubatorType type;
 
-    public MagicIncubatorBlock(BlockBehaviour.Properties properties){
+    public MagicIncubatorBlock(BlockBehaviour.Properties properties, IncubatorType type){
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, NORTH)
                 .setValue(LIT, false).setValue(WATERLOGGED, false));
+        this.type = type;
+    }
+
+    public MagicIncubatorBlock(IncubatorType type){
+        this(Properties.of().mapColor(MapColor.TERRACOTTA_BLACK).strength(50.0F, 1200.0F).sound(SoundType.STONE).noOcclusion().lightLevel(litBlockEmission(13)).requiresCorrectToolForDrops(), type);
     }
 
     @Override
@@ -124,6 +131,11 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
 
     private boolean isWaterAtPosition(Level level, BlockPos blockPos) {
         return level.getFluidState(blockPos).is(Fluids.WATER);
+    }
+
+    @Override
+    protected boolean skipRendering(BlockState blockState, BlockState blockState2, Direction direction) {
+        return blockState2.is(this) || super.skipRendering(blockState, blockState2, direction);
     }
 
     @Override
@@ -216,7 +228,7 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return state.getValue(PART) == IncubatorPart.BASE ? createTickerHelper(type, TensuraMfBlocksEntities.MAGICULE_INCUBATOR.get(), MagicIncubatorBlockEntity::tick) : null;
+        return state.getValue(PART) == IncubatorPart.BASE ? createTickerHelper(type, TensuraMfBlocksEntities.MAGICAL_INCUBATOR.get(), MagicIncubatorBlockEntity::tick) : null;
     }
 
     @Override
@@ -263,7 +275,7 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
         // 0..16 coordinate system for one block. The model's rear connector
         // extends beyond the south edge to z=20.5.
         GLASS = box(1.0F, 8.0F, 1.0F, 14.0F, 8.0F, 14.0F);
-        GLASS_TOP = box(1.0F, 0.0F, 1.0F, 15.0F, 8.0F, 13.0F);
+        GLASS_TOP = box(1.0F, 0.0F, 1.0F, 15.0F, 8.0F, 15.0F);
 
         BASE_SHAPE = Shapes.or(
                 box(0.0F, 0.0F, 0.0F, 16.0F, 2.0F, 16.0F),
@@ -273,8 +285,8 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
 
         TOP_SHAPE = Shapes.or(
                 GLASS_TOP,
-                box(1.0F, 8.0F, 1.0F, 14.0F, 34.0F, 14.0F),
-                box(0.0F, 14.0F, 0.0F, 16.0F, 32.0F, 16.0F));
+                box(1.0F, 8.0F, 1.0F, 15.0F, 10.0F, 15.0F),
+                box(0.0F, 14.0F, 0.0F, 16.0F, 14.0F, 16.0F));
 //        TOP_SHAPE = Shapes.or(
 //                box((double)3.0F, (double)0.0F, (double)3.0F, (double)13.0F, (double)9.0F, (double)13.0F),
 //                new VoxelShape[]{box((double)2.0F, (double)9.0F, (double)2.0F, (double)14.0F, (double)14.0F, (double)14.0F),
@@ -304,5 +316,14 @@ public class MagicIncubatorBlock extends BaseEntityBlock implements SimpleWaterl
         public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
             return entity.createMenu(i, inventory, player);
         }
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static enum IncubatorType {
+        NORMAL,
+        MITHRIL,
+        ORICHALCUM,
+        HIHIIROKANE;
+
     }
 }

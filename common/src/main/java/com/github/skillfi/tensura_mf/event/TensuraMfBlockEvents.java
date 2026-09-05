@@ -17,20 +17,20 @@ import java.util.UUID;
 public class TensuraMfBlockEvents {
     public static Event<EnergyTickEvent> ENERGY_TICK_PRE = EventFactory.createLoop(new EnergyTickEvent[0]);
     public static Event<EnergyTickEvent> ENERGY_TICK_POST = EventFactory.createLoop(new EnergyTickEvent[0]);
-    public static Event<EnergyReceiveEvent> ENERGY_RECEIVE = EventFactory.createEventResult(new EnergyReceiveEvent[0]);
+    public static Event<EnergyReceiveEvent> ENERGY_RECEIVE = EventFactory.createCompoundEventResult(new EnergyReceiveEvent[0]);
     public static Event<EnergyGenerateEvent> ENERGY_GENERATE = EventFactory.createLoop(new EnergyGenerateEvent[0]);
     public static Event<EnergyCheckEvent> ENERGY_CHECK = EventFactory.createCompoundEventResult(new EnergyCheckEvent[0]);
-    public static Event<EnergyConsumptionEvent> ENERGY_CONSUMPTION = EventFactory.createLoop(new EnergyConsumptionEvent[0]);
+    public static Event<EnergyConsumptionEvent> ENERGY_CONSUMPTION = EventFactory.createCompoundEventResult(new EnergyConsumptionEvent[0]);
 
 
     @FunctionalInterface
     public interface EnergyTickEvent {
-        void tick(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId);
+        void tick(ServerLevel serverLevel);
     }
 
     @FunctionalInterface
     public interface EnergyReceiveEvent {
-        EventResult receive(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId);
+        CompoundEventResult<Float> receive(ServerLevel serverLevel, BlockState state, BlockPos pos, float amount, UUID networkId);
     }
 
     @FunctionalInterface
@@ -45,6 +45,6 @@ public class TensuraMfBlockEvents {
 
     @FunctionalInterface
     public interface EnergyConsumptionEvent {
-        void get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId, Float amount);
+        CompoundEventResult<Float> get(ServerLevel serverLevel, BlockState state, BlockPos pos, UUID networkId, Float amount);
     }
 }

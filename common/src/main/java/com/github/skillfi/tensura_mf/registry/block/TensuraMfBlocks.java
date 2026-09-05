@@ -13,13 +13,16 @@ import io.github.manasmods.tensura.registry.item.misc.TensuraCreativeTabs;
 import io.github.manasmods.tensura.storage.chunk.ChunkStorage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Supplier;
@@ -28,8 +31,19 @@ import java.util.function.Supplier;
 public class TensuraMfBlocks {
     private static final DeferredRegister<Block> BLOCKS;
 
-    public static final RegistrySupplier<Block> MAGICULE_INCUBATOR;
+    @Language.English("Magical Incubator") @Language.Ukrainian("Інкубатор Магії")
+    public static final RegistrySupplier<Block> MAGICAL_INCUBATOR;
+    @Language.English("Mithril Magical Incubator") @Language.Ukrainian("Міфриловий Інкубатор Магії")
+    public static final RegistrySupplier<Block> MAGICAL_INCUBATOR_MITHRIL;
+    @Language.English("Orichalcum Magical Incubator") @Language.Ukrainian("Оріхалковий Інкубатор Магії")
+    public static final RegistrySupplier<Block> MAGICAL_INCUBATOR_ORICHALCUM;
+    @Language.English("Hihiirokane Magical Incubator") @Language.Ukrainian("Хіірокановий Інкубатор Магії")
+    public static final RegistrySupplier<Block> MAGICAL_INCUBATOR_HIHIIROKANE;
+    @Language.English("Magic Pipe") @Language.Ukrainian("Труба Магії")
     public static final RegistrySupplier<Block> PIPE;
+    @Language.English("Magisteel Glass") @Language.Ukrainian("Скло покрито магісталлю")
+    public static final RegistrySupplier<Block> MAGISTEEL_GLASS;
+//    public static final RegistrySupplier<Block> MAGISTEEL_GLASS_PANE;
     @Language.English("Bricks Magic Engine") @Language.Ukrainian("Цегляний магічний двигун")
     public static final RegistrySupplier<MagicEngineGeneratorBlock> BRICKS_MAGIC_ENGINE;
     @Language.English("Stone Bricks Magic Engine") @Language.Ukrainian("Магічний двигун з кам'яної цегли")
@@ -72,28 +86,41 @@ public class TensuraMfBlocks {
         Items.ITEMS.register();
     }
 
+    public static Boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType) {
+        return false;
+    }
+
+    private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return false;
+    }
+
     static {
         BLOCKS = DeferredRegister.create(TensuraMf.MOD_ID, Registries.BLOCK);
-        MAGICULE_INCUBATOR = registerBlock("magicule_incubator", ()->new MagicIncubatorBlock(BlockBehaviour.Properties.of().noOcclusion()));
+        MAGICAL_INCUBATOR = registerBlock("magical_incubator", ()->new MagicIncubatorBlock(MagicIncubatorBlock.IncubatorType.NORMAL));
+        MAGICAL_INCUBATOR_MITHRIL = registerBlock("magical_incubator_mithril", ()->new MagicIncubatorBlock(MagicIncubatorBlock.IncubatorType.MITHRIL));
+        MAGICAL_INCUBATOR_ORICHALCUM = registerBlock("magical_incubator_orichalcum", ()->new MagicIncubatorBlock(MagicIncubatorBlock.IncubatorType.ORICHALCUM));
+        MAGICAL_INCUBATOR_HIHIIROKANE = registerBlock("magical_incubator_hihiirokane", ()->new MagicIncubatorBlock(MagicIncubatorBlock.IncubatorType.HIHIIROKANE));
         PIPE = registerBlock("pipe", PipeBlock::new);
+        MAGISTEEL_GLASS = registerBlock("magisteel_glass", ()->new TransparentBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).strength(0.3F).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TensuraMfBlocks::never).isRedstoneConductor(TensuraMfBlocks::never).isSuffocating(TensuraMfBlocks::never).isViewBlocking(TensuraMfBlocks::never)));
+//        MAGISTEEL_GLASS_PANE = registerBlock("magisteel_glass_pane", ()->new IronBarsBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).strength(0.3F).sound(SoundType.GLASS).noOcclusion()));
         BRICKS_MAGIC_ENGINE = registerBlock("bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
         STONE_BRICKS_MAGIC_ENGINE = registerBlock("stone_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
         TUFF_BRICKS_MAGIC_ENGINE = registerBlock("tuff_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TUFF_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
         DEEPSLATE_BRICKS_MAGIC_ENGINE = registerBlock("deepslate_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
         MUD_BRICKS_MAGIC_ENGINE = registerBlock("mud_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
         PRISMARINE_BRICK_MAGIC_ENGINE = registerBlock("prismarine_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PRISMARINE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE = BLOCKS.register("nether_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        RED_NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE = BLOCKS.register("red_nether_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_NETHER_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        POLISHED_BLACKSTONE_BRICKS_MAGIC_ENGINE = BLOCKS.register("polished_blackstone_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BLACKSTONE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        QUARTZ_BRICKS_MAGIC_ENGINE = BLOCKS.register("quartz_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        END_STONE_BRICKS_MAGIC_ENGINE = BLOCKS.register("end_stone_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        PURPUR_BRICKS_MAGIC_ENGINE = BLOCKS.register("purpur_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPUR_BLOCK).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = BLOCKS.register("low_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(1.5F).sound(SoundType.AMETHYST).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        MEDIUM_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = BLOCKS.register("medium_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        HIGH_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = BLOCKS.register("high_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        LABYRINTH_BRICKS_MAGIC_ENGINE = BLOCKS.register("labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(-1.0F, 3600000.0F).noLootTable().lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        CREAM_LABYRINTH_BRICKS_MAGIC_ENGINE = BLOCKS.register("cream_labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.ofFullCopy(LABYRINTH_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
-        DARK_LABYRINTH_BRICKS_MAGIC_ENGINE = BLOCKS.register("dark_labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.ofFullCopy(LABYRINTH_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE = registerBlock("nether_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        RED_NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE = registerBlock("red_nether_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_NETHER_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        POLISHED_BLACKSTONE_BRICKS_MAGIC_ENGINE = registerBlock("polished_blackstone_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BLACKSTONE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        QUARTZ_BRICKS_MAGIC_ENGINE = registerBlock("quartz_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        END_STONE_BRICKS_MAGIC_ENGINE = registerBlock("end_stone_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE_BRICKS).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        PURPUR_BRICKS_MAGIC_ENGINE = registerBlock("purpur_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPUR_BLOCK).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = registerBlock("low_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(1.5F).sound(SoundType.AMETHYST).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        MEDIUM_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = registerBlock("medium_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        HIGH_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE = registerBlock("high_quality_magic_crystal_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        LABYRINTH_BRICKS_MAGIC_ENGINE = registerBlock("labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).strength(-1.0F, 3600000.0F).noLootTable().lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        CREAM_LABYRINTH_BRICKS_MAGIC_ENGINE = registerBlock("cream_labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.ofFullCopy(LABYRINTH_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
+        DARK_LABYRINTH_BRICKS_MAGIC_ENGINE = registerBlock("dark_labyrinth_bricks_magic_engine", () -> new MagicEngineGeneratorBlock(ChunkStorage.CONFIG.labyrinthMagicEngineReduction, ChunkStorage.CONFIG.labyrinthMagicEngineRange, true, BlockBehaviour.Properties.ofFullCopy(LABYRINTH_BRICKS_MAGIC_ENGINE.get()).lightLevel(MagicEngineGeneratorBlock.getLightEmission())));
     }
 
     private static <T extends Block> RegistrySupplier<T> registerBlock(String id, Supplier<T> block) {
@@ -103,8 +130,13 @@ public class TensuraMfBlocks {
     @NoArgsConstructor
     public static class Items {
         private static final DeferredRegister<Item> ITEMS;
-        public static final RegistrySupplier<Item> MAGICULE_INCUBATOR;
+        public static final RegistrySupplier<Item> MAGICAL_INCUBATOR;
+        public static final RegistrySupplier<Item> MAGICAL_INCUBATOR_MITHRIL;
+        public static final RegistrySupplier<Item> MAGICAL_INCUBATOR_ORICHALCUM;
+        public static final RegistrySupplier<Item> MAGICAL_INCUBATOR_HIHIIROKANE;
         public static final RegistrySupplier<Item> PIPE;
+        public static final RegistrySupplier<Item> MAGISTEEL_GLASS;
+//        public static final RegistrySupplier<Item> MAGISTEEL_GLASS_PANE;
         public static final RegistrySupplier<Item> BRICKS_MAGIC_ENGINE;
         public static final RegistrySupplier<Item> STONE_BRICKS_MAGIC_ENGINE;
         public static final RegistrySupplier<Item> TUFF_BRICKS_MAGIC_ENGINE;
@@ -125,8 +157,13 @@ public class TensuraMfBlocks {
         public static final RegistrySupplier<Item> DARK_LABYRINTH_BRICKS_MAGIC_ENGINE;
         static {
             ITEMS = DeferredRegister.create(TensuraMf.MOD_ID, Registries.ITEM);
-            MAGICULE_INCUBATOR = fireResistedBlockItem(TensuraMfBlocks.MAGICULE_INCUBATOR, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
+            MAGICAL_INCUBATOR = fireResistedBlockItem(TensuraMfBlocks.MAGICAL_INCUBATOR, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
+            MAGICAL_INCUBATOR_MITHRIL = fireResistedBlockItem(TensuraMfBlocks.MAGICAL_INCUBATOR_MITHRIL, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
+            MAGICAL_INCUBATOR_ORICHALCUM = fireResistedBlockItem(TensuraMfBlocks.MAGICAL_INCUBATOR_ORICHALCUM, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
+            MAGICAL_INCUBATOR_HIHIIROKANE = fireResistedBlockItem(TensuraMfBlocks.MAGICAL_INCUBATOR_HIHIIROKANE, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
             PIPE = fireResistedBlockItem(TensuraMfBlocks.PIPE, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
+            MAGISTEEL_GLASS = fireResistedBlockItem(TensuraMfBlocks.MAGISTEEL_GLASS, TensuraCreativeTabs.BLOCKS);
+//            MAGISTEEL_GLASS_PANE = fireResistedBlockItem(TensuraMfBlocks.MAGISTEEL_GLASS_PANE, TensuraCreativeTabs.BLOCKS);
             BRICKS_MAGIC_ENGINE = simpleBlockItem(TensuraMfBlocks.BRICKS_MAGIC_ENGINE, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
             STONE_BRICKS_MAGIC_ENGINE = simpleBlockItem(TensuraMfBlocks.STONE_BRICKS_MAGIC_ENGINE, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);
             TUFF_BRICKS_MAGIC_ENGINE = simpleBlockItem(TensuraMfBlocks.TUFF_BRICKS_MAGIC_ENGINE, TensuraCreativeTabs.FUNCTIONAL_BLOCKS);

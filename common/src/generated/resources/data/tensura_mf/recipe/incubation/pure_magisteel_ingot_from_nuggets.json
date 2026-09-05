@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "input": {
+    "item": "tensura:pure_magisteel_nugget"
+  },
+  "inputCount": 9,
+  "magicAmount": 100.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:pure_magisteel_ingot"
+  }
+}

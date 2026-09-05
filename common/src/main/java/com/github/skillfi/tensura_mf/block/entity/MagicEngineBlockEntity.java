@@ -128,6 +128,7 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
                 && state.hasProperty(MagicEngineGeneratorBlock.ENABLED)
                 && state.getValue(MagicEngineGeneratorBlock.ENABLED)) {
             Network network1 = iNetwork.getNetwork(pos);
+            engine.setNetworkId(network1.networkId);
             engine.generate(level, state, pos, network1.networkId);
         }
 
@@ -199,8 +200,7 @@ public class MagicEngineBlockEntity extends AbstractEnergyBlockEntity implements
     }
 
     @Override
-    public boolean receive(Level level, BlockState state, BlockPos blockPos, UUID networkId) {
-        return false;
+    public void receive(Level level, BlockState state, BlockPos blockPos, UUID networkId) {
     }
 
     @Override

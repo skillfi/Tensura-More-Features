@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "tensura:hihiirokane_block"
+    },
+    "$": {
+      "item": "tensura_mf:pipe"
+    },
+    "&": {
+      "item": "tensura:element_core_water"
+    },
+    "*": {
+      "item": "tensura_mf:magisteel_glass"
+    }
+  },
+  "pattern": [
+    "#$#",
+    "*&*",
+    "#$#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tensura_mf:magical_incubator_hihiirokane"
+  }
+}

@@ -47,6 +47,42 @@
     },
     {
       "apply": {
+        "model": "tensura_mf:block/pipe_arm_up_south"
+      },
+      "when": {
+        "south": "true",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tensura_mf:block/pipe_arm_up_north"
+      },
+      "when": {
+        "north": "true",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tensura_mf:block/pipe_arm_up_east"
+      },
+      "when": {
+        "east": "true",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tensura_mf:block/pipe_arm_up_west"
+      },
+      "when": {
+        "up": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
         "model": "tensura_mf:block/pipe_arm_down"
       },
       "when": {

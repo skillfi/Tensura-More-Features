@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 32400,
+  "input": {
+    "item": "tensura:orichalcum_ingot"
+  },
+  "inputCount": 4,
+  "magicAmount": 32400.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:orichalcum_boots"
+  }
+}

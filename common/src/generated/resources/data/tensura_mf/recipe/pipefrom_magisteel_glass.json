@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "tensura_mf:magisteel_glass"
+    },
+    "$": {
+      "item": "tensura:high_magisteel_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#$#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tensura_mf:pipe"
+  }
+}

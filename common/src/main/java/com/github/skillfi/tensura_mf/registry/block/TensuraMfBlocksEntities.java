@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public class TensuraMfBlocksEntities {
 
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY;
-    public static final RegistrySupplier<BlockEntityType<MagicIncubatorBlockEntity>> MAGICULE_INCUBATOR;
+    public static final RegistrySupplier<BlockEntityType<MagicIncubatorBlockEntity>> MAGICAL_INCUBATOR;
     public static final RegistrySupplier<BlockEntityType<MagicEngineBlockEntity>> MAGIC_ENGINE;
     public static final RegistrySupplier<BlockEntityType<PipeBlockEntity>> PIPE;
 
@@ -30,7 +30,11 @@ public class TensuraMfBlocksEntities {
 
     static {
         BLOCK_ENTITY = DeferredRegister.create(TensuraMf.MOD_ID, Registries.BLOCK_ENTITY_TYPE);
-        MAGICULE_INCUBATOR = registerBlockEntity("magicule_incubator", () -> BlockEntityType.Builder.of(MagicIncubatorBlockEntity::new, TensuraMfBlocks.MAGICULE_INCUBATOR.get()).build(null));
+        MAGICAL_INCUBATOR = registerBlockEntity("magical_incubator", () -> BlockEntityType.Builder.of(MagicIncubatorBlockEntity::new,
+                TensuraMfBlocks.MAGICAL_INCUBATOR.get(),
+                TensuraMfBlocks.MAGICAL_INCUBATOR_MITHRIL.get(),
+                TensuraMfBlocks.MAGICAL_INCUBATOR_ORICHALCUM.get(),
+                TensuraMfBlocks.MAGICAL_INCUBATOR_HIHIIROKANE.get()).build(null));
         MAGIC_ENGINE = registerBlockEntity("magic_engine", () -> BlockEntityType.Builder.of(MagicEngineBlockEntity::new, new Block[]{
                 TensuraMfBlocks.BRICKS_MAGIC_ENGINE.get(),
                 TensuraMfBlocks.STONE_BRICKS_MAGIC_ENGINE.get(),

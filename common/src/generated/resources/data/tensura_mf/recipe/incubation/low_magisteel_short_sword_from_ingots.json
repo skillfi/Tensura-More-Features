@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 1,
+  "input": {
+    "item": "tensura:low_magisteel_ingot"
+  },
+  "magicAmount": 1.2345679,
+  "output": {
+    "count": 1,
+    "id": "tensura:low_magisteel_short_sword"
+  }
+}

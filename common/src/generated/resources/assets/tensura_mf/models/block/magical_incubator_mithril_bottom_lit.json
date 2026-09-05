@@ -1,0 +1,7 @@
+{
+  "parent": "tensura_mf:block/magical_incubator_mithril_bottom",
+  "textures": {
+    "0": "tensura_mf:block/magical_incubator_mithril_bottom_lit",
+    "particle": "tensura_mf:block/magical_incubator_mithril_bottom"
+  }
+}

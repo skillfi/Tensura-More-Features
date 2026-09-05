@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 300,
+  "input": {
+    "item": "tensura:high_magisteel_scythe"
+  },
+  "magicAmount": 300.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:pure_magisteel_scythe"
+  }
+}

@@ -20,15 +20,10 @@ public class TensuraMfItemModelProvider extends ItemModelProvider {
 
     protected void registerModels() {
         generateSpawnEggs();
-        withExistingParent("pipe", modLoc("block/pipe_core"));
         this.getBuilder("magic_engine")
                 .parent(new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile(
                         ResourceLocation.fromNamespaceAndPath("tensura", "block/magic_engine")));
-        incubatorModel(TensuraMfBlocks.Items.MAGICULE_INCUBATOR,
-                ResourceLocation.fromNamespaceAndPath(TensuraMf.MOD_ID, "item/magicule_incubator"),
-                ResourceLocation.fromNamespaceAndPath(TensuraMf.MOD_ID, "block/magicule_incubator_bottom"),
-                ResourceLocation.fromNamespaceAndPath(TensuraMf.MOD_ID, "block/magicule_incubator_top"),
-                ResourceLocation.withDefaultNamespace("block/obsidian"));
+        withExistingParent("magisteel_glass", modLoc("block/magisteel_glass"));
         this.cubeBlockItemTensura(TensuraMfBlocks.BRICKS_MAGIC_ENGINE);
         this.cubeBlockItemTensura(TensuraMfBlocks.STONE_BRICKS_MAGIC_ENGINE);
         this.cubeBlockItemTensura(TensuraMfBlocks.TUFF_BRICKS_MAGIC_ENGINE);
@@ -66,10 +61,11 @@ public class TensuraMfItemModelProvider extends ItemModelProvider {
         this.spawnEggItem( TensuraMfSpawnEggs.DIVINE_FIGHTER.get());
     }
 
-    private ItemModelBuilder incubatorModel(RegistrySupplier<? extends Item> item, ResourceLocation parent, ResourceLocation bottom, ResourceLocation top, ResourceLocation particle) {
-        return (((this.withExistingParent(item.getId().getPath(), parent))
+    private ItemModelBuilder incubatorModel(RegistrySupplier<? extends Item> item, ResourceLocation parent, ResourceLocation bottom, ResourceLocation glass,ResourceLocation top, ResourceLocation particle) {
+        return ((((this.withExistingParent(item.getId().getPath(), parent))
                 .texture("0", bottom))
                 .texture("1", top))
+                .texture("2", glass))
                 .texture("particle", particle);
     }
 }

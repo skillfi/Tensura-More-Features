@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 8100,
+  "input": {
+    "item": "tensura:mithril_ingot"
+  },
+  "inputCount": 9,
+  "magicAmount": 8100.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:mithril_block"
+  }
+}

@@ -11,5 +11,5 @@ public interface IMagic extends INetworkEntry{
     Float getMagicEnergy();
     Float getMaxMagicEnergy();
     void setMagicEnergy(Float magicEnergy);
-    boolean receive(Level level, BlockState state, BlockPos blockPos, UUID networkId);
+    void receive(Level level, BlockState state, BlockPos blockPos, UUID networkId);
 }

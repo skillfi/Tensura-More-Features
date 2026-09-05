@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 400,
+  "input": {
+    "item": "tensura:pure_magisteel_ingot"
+  },
+  "inputCount": 4,
+  "magicAmount": 400.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:pure_magisteel_spear"
+  }
+}

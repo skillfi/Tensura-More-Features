@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 2,
+  "input": {
+    "item": "tensura:low_magisteel_ingot"
+  },
+  "inputCount": 2,
+  "magicAmount": 2.4691358,
+  "output": {
+    "count": 1,
+    "id": "tensura:low_magisteel_katana"
+  }
+}

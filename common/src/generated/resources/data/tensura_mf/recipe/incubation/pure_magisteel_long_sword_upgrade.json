@@ -1,0 +1,11 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "input": {
+    "item": "tensura:high_magisteel_long_sword"
+  },
+  "magicAmount": 100.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:pure_magisteel_long_sword"
+  }
+}

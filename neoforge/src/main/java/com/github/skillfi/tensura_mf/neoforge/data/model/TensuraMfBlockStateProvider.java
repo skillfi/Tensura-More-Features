@@ -11,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -20,36 +21,56 @@ public class TensuraMfBlockStateProvider extends BlockStateProvider {
     }
 
     protected void registerStatesAndModels() {
-        magiculeIncubator(TensuraMfBlocks.MAGICULE_INCUBATOR.get(), TensuraMf.create("block/magicule_incubator_bottom"));
+        magicalIncubator(TensuraMfBlocks.MAGICAL_INCUBATOR.get(), modLoc("block/magical_incubator_bottom"));
+        magicalIncubator(TensuraMfBlocks.MAGICAL_INCUBATOR_MITHRIL.get(), modLoc("block/magical_incubator_mithril_bottom"));
+        magicalIncubator(TensuraMfBlocks.MAGICAL_INCUBATOR_ORICHALCUM.get(), modLoc("block/magical_incubator_orichalcum_bottom"));
+        magicalIncubator(TensuraMfBlocks.MAGICAL_INCUBATOR_HIHIIROKANE.get(), modLoc("block/magical_incubator_hihiirokane_bottom"), "magical_incubator_orichalcum");
         registerPipe();
-        this.magicEngine(TensuraMfBlocks.BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/bricks"));
-        this.magicEngine(TensuraMfBlocks.STONE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/stone_bricks"));
-        this.magicEngine(TensuraMfBlocks.TUFF_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/tuff_bricks"));
-        this.magicEngine(TensuraMfBlocks.DEEPSLATE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/deepslate_bricks"));
-        this.magicEngine(TensuraMfBlocks.MUD_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/mud_bricks"));
-        this.magicEngine(TensuraMfBlocks.PRISMARINE_BRICK_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/prismarine_bricks"));
-        this.magicEngine(TensuraMfBlocks.NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/nether_bricks"));
-        this.magicEngine(TensuraMfBlocks.RED_NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/red_nether_bricks"));
-        this.magicEngine(TensuraMfBlocks.POLISHED_BLACKSTONE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/polished_blackstone_bricks"));
-        this.magicEngine(TensuraMfBlocks.QUARTZ_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/quartz_bricks"));
-        this.magicEngine(TensuraMfBlocks.END_STONE_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/end_stone_bricks"));
-        this.magicEngine(TensuraMfBlocks.PURPUR_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.withDefaultNamespace("block/purpur_block"));
-        this.magicEngine(TensuraMfBlocks.LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/low_quality_magic_crystal_bricks"));
-        this.magicEngine(TensuraMfBlocks.MEDIUM_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/medium_quality_magic_crystal_bricks"));
-        this.magicEngine(TensuraMfBlocks.HIGH_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/high_quality_magic_crystal_bricks"));
-        this.magicEngine(TensuraMfBlocks.LABYRINTH_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/labyrinth_bricks"));
-        this.magicEngine(TensuraMfBlocks.CREAM_LABYRINTH_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/cream_labyrinth_bricks"));
-        this.magicEngine(TensuraMfBlocks.DARK_LABYRINTH_BRICKS_MAGIC_ENGINE.get(), ResourceLocation.fromNamespaceAndPath("tensura","block/dark_labyrinth_bricks"));
+        this.magicEngine(TensuraMfBlocks.BRICKS_MAGIC_ENGINE.get(), mcLoc("block/bricks"));
+        this.magicEngine(TensuraMfBlocks.STONE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/stone_bricks"));
+        this.magicEngine(TensuraMfBlocks.TUFF_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/tuff_bricks"));
+        this.magicEngine(TensuraMfBlocks.DEEPSLATE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/deepslate_bricks"));
+        this.magicEngine(TensuraMfBlocks.MUD_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/mud_bricks"));
+        this.magicEngine(TensuraMfBlocks.PRISMARINE_BRICK_MAGIC_ENGINE.get(), mcLoc("block/prismarine_bricks"));
+        this.magicEngine(TensuraMfBlocks.NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/nether_bricks"));
+        this.magicEngine(TensuraMfBlocks.RED_NETHER_BRICKS_STONE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/red_nether_bricks"));
+        this.magicEngine(TensuraMfBlocks.POLISHED_BLACKSTONE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/polished_blackstone_bricks"));
+        this.magicEngine(TensuraMfBlocks.QUARTZ_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/quartz_bricks"));
+        this.magicEngine(TensuraMfBlocks.END_STONE_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/end_stone_bricks"));
+        this.magicEngine(TensuraMfBlocks.PURPUR_BRICKS_MAGIC_ENGINE.get(), mcLoc("block/purpur_block"));
+        this.magicEngine(TensuraMfBlocks.LOW_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/low_quality_magic_crystal_bricks"));
+        this.magicEngine(TensuraMfBlocks.MEDIUM_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/medium_quality_magic_crystal_bricks"));
+        this.magicEngine(TensuraMfBlocks.HIGH_QUALITY_MAGIC_CRYSTAL_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/high_quality_magic_crystal_bricks"));
+        this.magicEngine(TensuraMfBlocks.LABYRINTH_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/labyrinth_bricks"));
+        this.magicEngine(TensuraMfBlocks.CREAM_LABYRINTH_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/cream_labyrinth_bricks"));
+        this.magicEngine(TensuraMfBlocks.DARK_LABYRINTH_BRICKS_MAGIC_ENGINE.get(), tensuraLoc("block/dark_labyrinth_bricks"));
+        this.simpleBlock(TensuraMfBlocks.MAGISTEEL_GLASS.get());
+//        paneBlock((IronBarsBlock) TensuraMfBlocks.MAGISTEEL_GLASS_PANE.get(), modLoc("block/magisteel_glass"), modLoc("block/magisteel_glass_pane"));
     }
 
-    protected void magiculeIncubator(Block block, ResourceLocation particleTexture) {
+    public ResourceLocation tensuraLoc(String name) {
+        return ResourceLocation.fromNamespaceAndPath("tensura", name);
+    }
+
+    protected void magicalIncubator(Block block, ResourceLocation particleTexture) {
         String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        ModelFile bottom = this.models().getExistingFile(this.modLoc("block/" + name + "_bottom"));
-        ModelFile bottomLit = ((this.models().withExistingParent(name + "_bottom_lit", this.modLoc("block/"+name+"_bottom"))).texture("0", this.modLoc("block/" + name + "_bottom_lit"))).texture("particle", particleTexture);
-        ModelFile glass = ((this.models().withExistingParent(name + "_glass_lit", this.modLoc("block/"+name+"_glass"))).texture("0", this.modLoc("block/" + name + "_glass_lit"))).texture("particle", particleTexture);
-        ModelFile glsssLit = ((this.models().withExistingParent(name + "_glass_lit", this.modLoc("block/"+name+"_glass"))).texture("0", this.modLoc("block/" + name + "_glass_lit"))).texture("particle", particleTexture);
-        ModelFile top = this.models().getExistingFile(this.modLoc("block/" + name + "_top"));
-        ModelFile topLit = ((this.models().withExistingParent(name + "_top_lit", this.modLoc("block/"+name+"_top"))).texture("0", this.modLoc("block/" + name + "_top_lit"))).texture("particle", particleTexture);
+        magicalIncubator(block, particleTexture, name);
+    }
+
+    protected void magicalIncubator(Block block, ResourceLocation particleTexture, String modelName) {
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
+        ModelFile bottom = this.models().getExistingFile(this.modLoc("block/" + modelName + "_bottom"));
+        ModelFile bottomLit = modelName.equals(name)
+                ? ((this.models().withExistingParent(name + "_bottom_lit", this.modLoc("block/"+name+"_bottom"))).texture("0", this.modLoc("block/" + name + "_bottom_lit"))).texture("particle", particleTexture)
+                : this.models().getExistingFile(this.modLoc("block/" + modelName + "_bottom_lit"));
+        ModelFile glass = ((this.models().getExistingFile(this.modLoc("block/"+"magical_incubator_glass"))));
+        ModelFile glassLit = modelName.equals("magical_incubator")
+                ? ((this.models().withExistingParent("magical_incubator_glass_lit", this.modLoc("block/magical_incubator_glass"))).texture("0", this.modLoc("block/magical_incubator_glass_lit"))).texture("particle", particleTexture)
+                : this.models().getExistingFile(this.modLoc("block/magical_incubator_glass_lit"));
+        ModelFile top = this.models().getExistingFile(this.modLoc("block/" + modelName + "_top"));
+        ModelFile topLit = modelName.equals(name)
+                ? ((this.models().withExistingParent(name + "_top_lit", this.modLoc("block/"+name+"_top"))).texture("0", this.modLoc("block/" + name + "_bottom_lit"))).texture("particle", particleTexture)
+                : this.models().getExistingFile(this.modLoc("block/" + modelName + "_top_lit"));
         VariantBlockStateBuilder builder = this.getVariantBuilder(block);
 
         for(Direction facing : Direction.Plane.HORIZONTAL) {
@@ -66,7 +87,7 @@ public class TensuraMfBlockStateProvider extends BlockStateProvider {
             this.addIncubatorState(builder, facing, false, IncubatorPart.BASE, bottom, rotY);
             this.addIncubatorState(builder, facing, true, IncubatorPart.BASE, bottomLit, rotY);
             this.addIncubatorState(builder, facing, false, IncubatorPart.GLASS, glass, rotY);
-            this.addIncubatorState(builder, facing, true, IncubatorPart.GLASS, glsssLit, rotY);
+            this.addIncubatorState(builder, facing, true, IncubatorPart.GLASS, glassLit, rotY);
             this.addIncubatorState(builder, facing, false, IncubatorPart.TOP, top, rotY);
             this.addIncubatorState(builder, facing, true, IncubatorPart.TOP, topLit, rotY);
         }
@@ -147,6 +168,10 @@ public class TensuraMfBlockStateProvider extends BlockStateProvider {
         ModelFile east = models().getExistingFile(modLoc("block/pipe_arm_east"));
         ModelFile west = models().getExistingFile(modLoc("block/pipe_arm_west"));
         ModelFile up = models().getExistingFile(modLoc("block/pipe_arm_up"));
+        ModelFile up_south = models().getExistingFile(modLoc("block/pipe_arm_up_south"));
+        ModelFile up_north = models().getExistingFile(modLoc("block/pipe_arm_up_north"));
+        ModelFile up_east = models().getExistingFile(modLoc("block/pipe_arm_up_east"));
+        ModelFile up_west = models().getExistingFile(modLoc("block/pipe_arm_up_west"));
         ModelFile down = models().getExistingFile(modLoc("block/pipe_arm_down"));
 
         getMultipartBuilder(pipe)
@@ -156,6 +181,10 @@ public class TensuraMfBlockStateProvider extends BlockStateProvider {
                 .part().modelFile(east).addModel().condition(PipeBlock.EAST, true).end()
                 .part().modelFile(west).addModel().condition(PipeBlock.WEST, true).end()
                 .part().modelFile(up).addModel().condition(PipeBlock.UP, true).end()
+                .part().modelFile(up_south).addModel().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).end()
+                .part().modelFile(up_north).addModel().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).end()
+                .part().modelFile(up_east).addModel().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).end()
+                .part().modelFile(up_west).addModel().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).end()
                 .part().modelFile(down).addModel().condition(PipeBlock.DOWN, true).end();
     }
 }

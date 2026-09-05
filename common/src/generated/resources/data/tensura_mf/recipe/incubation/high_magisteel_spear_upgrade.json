@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 44,
+  "input": {
+    "item": "tensura:low_magisteel_spear"
+  },
+  "magicAmount": 44.444443,
+  "output": {
+    "count": 1,
+    "id": "tensura:high_magisteel_spear"
+  }
+}

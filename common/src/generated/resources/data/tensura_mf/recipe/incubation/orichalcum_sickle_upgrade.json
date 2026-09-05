@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 40500,
+  "input": {
+    "item": "tensura:mithril_sickle"
+  },
+  "magicAmount": 40500.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:orichalcum_sickle"
+  }
+}

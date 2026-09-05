@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 364500,
+  "input": {
+    "item": "tensura:orichalcum_sickle"
+  },
+  "magicAmount": 364500.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_sickle"
+  }
+}

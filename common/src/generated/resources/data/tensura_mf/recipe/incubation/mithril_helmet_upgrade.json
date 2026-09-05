@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 7200,
+  "input": {
+    "item": "tensura:pure_magisteel_helmet"
+  },
+  "magicAmount": 7200.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:mithril_helmet"
+  }
+}

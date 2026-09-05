@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 218700,
+  "input": {
+    "item": "tensura:orichalcum_scythe"
+  },
+  "magicAmount": 218700.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_scythe"
+  }
+}

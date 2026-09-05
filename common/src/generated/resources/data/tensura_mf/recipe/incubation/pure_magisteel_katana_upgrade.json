@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 200,
+  "input": {
+    "item": "tensura:high_magisteel_katana"
+  },
+  "magicAmount": 200.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:pure_magisteel_katana"
+  }
+}

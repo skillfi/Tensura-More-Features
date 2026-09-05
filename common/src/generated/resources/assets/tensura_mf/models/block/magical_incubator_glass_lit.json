@@ -1,0 +1,7 @@
+{
+  "parent": "tensura_mf:block/magical_incubator_glass",
+  "textures": {
+    "0": "tensura_mf:block/magical_incubator_glass_lit",
+    "particle": "tensura_mf:block/magical_incubator_bottom"
+  }
+}

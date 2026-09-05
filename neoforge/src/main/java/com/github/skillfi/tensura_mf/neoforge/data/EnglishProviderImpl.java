@@ -24,10 +24,6 @@ public class EnglishProviderImpl extends TensuraMfLanguageProvider{
         addEntities();
         addItems();
         addBlocks();
-        add(TensuraMfBlocks.MAGICULE_INCUBATOR.get(), "Magicule Incubator");
-        add("item.tensura_mf.magicule_incubator", "Magicule Incubator");
-        add(TensuraMfBlocks.PIPE.get(), "Magic Energy Pipe");
-        add("item.tensura_mf.pipe", "Magic Energy Pipe");
         add("container.tensura_mf.magicule_incubator", "Magicule Incubator");
         tooltips();
     }

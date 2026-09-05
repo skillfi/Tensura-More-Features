@@ -4,6 +4,7 @@ import com.github.skillfi.tensura_mf.api.energy.INetworkEntry;
 import com.github.skillfi.tensura_mf.block.entity.MagicEngineBlockEntity;
 import com.github.skillfi.tensura_mf.storage.INetwork;
 import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
+import io.github.manasmods.tensura.util.client.RenderHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -30,6 +31,7 @@ public abstract class MixinOverlayHandler {
 
     @Shadow
     private static GuiGraphics graphics;
+    private static final Component MAGIC_ENERGY_LABEL = Component.translatable("analysis.tensura_mf.magic_energy");
 
     @Inject(method = "renderBlockAnalysis", at = @At("TAIL"))
     private static void tensuraMf$renderMagicEnergy(BlockState blockState, BlockPos blockPos, CallbackInfo callbackInfo) {
@@ -37,15 +39,14 @@ public abstract class MixinOverlayHandler {
         if (!(blockEntity instanceof INetworkEntry iNetworkEntry)) {
             return;
         }
+        String text = "-> ";
+
         INetwork iNetwork = TensuraMfStorages.getNetworkFrom(level);
         Float magicEnergy = iNetwork.getMagicEnergy(iNetworkEntry.getNetworkId());
+        Float maxMagicEnergy = iNetwork.getMaxMagicEnergy(iNetworkEntry.getNetworkId());
+        String iNetworkText = text + magicEnergy + "/" + maxMagicEnergy;
 
-        graphics.drawString(
-                font,
-                Component.translatable("analysis.tensura_mf.magic_energy", magicEnergy),
-                7,
-                120,
-                0xFFFFFF
-        );
+        RenderHelper.drawSimpleScrollingText(graphics, font, MAGIC_ENERGY_LABEL, 7, 120, 16, 16777215);
+        RenderHelper.drawSimpleScrollingText(graphics, font, Component.literal(iNetworkText), 7, 120 + 9 + 2, 16, 16777215);
     }
 }

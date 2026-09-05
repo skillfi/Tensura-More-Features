@@ -1,24 +1,24 @@
 {
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
+	"texture_size": [8, 8],
 	"textures": {
-		"0": "tensura_mf:block/pipe",
-		"particle": "tensura_mf:block/pipe"
+		"1": "tensura_mf:block/pipe_core",
+		"particle": "tensura_mf:block/pipe_core"
 	},
 	"elements": [
 		{
 			"name": "core",
 			"from": [7, 3, 7],
 			"to": [9, 5, 9],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2, 8]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
 			"faces": {
-				"north": {"uv": [4.75, 3, 5.25, 3.5], "texture": "#0"},
-				"east": {"uv": [4.25, 3, 4.75, 3.5], "texture": "#0"},
-				"south": {"uv": [5.75, 3, 6.25, 3.5], "texture": "#0"},
-				"west": {"uv": [5.25, 3, 5.75, 3.5], "texture": "#0"},
-				"up": {"uv": [5.25, 3, 4.75, 2.5], "texture": "#0"},
-				"down": {"uv": [5.75, 2.5, 5.25, 3], "texture": "#0"}
+				"north": {"uv": [4, 4, 8, 8], "texture": "#1"},
+				"east": {"uv": [0, 4, 4, 8], "texture": "#1"},
+				"south": {"uv": [12, 4, 16, 8], "texture": "#1"},
+				"west": {"uv": [8, 4, 12, 8], "texture": "#1"},
+				"up": {"uv": [8, 4, 4, 0], "texture": "#1"},
+				"down": {"uv": [12, 0, 8, 4], "texture": "#1"}
 			}
 		}
 	],

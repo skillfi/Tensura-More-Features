@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 24300,
+  "input": {
+    "item": "tensura:mithril_tachi"
+  },
+  "magicAmount": 24300.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:orichalcum_tachi"
+  }
+}

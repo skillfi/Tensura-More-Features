@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 72900,
+  "input": {
+    "item": "tensura:orichalcum_kodachi"
+  },
+  "magicAmount": 72900.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_kodachi"
+  }
+}

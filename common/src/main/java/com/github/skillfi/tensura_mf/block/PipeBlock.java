@@ -1,24 +1,18 @@
 package com.github.skillfi.tensura_mf.block;
 
 import com.github.skillfi.tensura_mf.api.energy.IMagic;
-import com.github.skillfi.tensura_mf.api.energy.Network;
-import com.github.skillfi.tensura_mf.block.entity.MagicEngineBlockEntity;
 import com.github.skillfi.tensura_mf.block.entity.PipeBlockEntity;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
-import com.github.skillfi.tensura_mf.storage.INetwork;
-import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +21,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PipeBlock extends BaseEntityBlock {
@@ -37,9 +35,15 @@ public class PipeBlock extends BaseEntityBlock {
     public static final BooleanProperty WEST = BooleanProperty.create("west");
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
+    private static final VoxelShape NORTH_SHAPE;
+    private static final VoxelShape SOUTH_SHAPE;
+    private static final VoxelShape EAST_SHAPE;
+    private static final VoxelShape WEST_SHAPE;
+    private static final VoxelShape UP_SHAPE;
+    private static final VoxelShape DOWN_SHAPE;
 
     public PipeBlock() {
-        this(Properties.of().strength(1.5F).noOcclusion().randomTicks());
+        this(Properties.of().noOcclusion());
     }
 
     public PipeBlock(Properties properties) {
@@ -95,6 +99,11 @@ public class PipeBlock extends BaseEntityBlock {
         return state;
     }
 
+    @Override
+    public @NotNull RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
     private static boolean connectsTo(BlockGetter level, BlockPos pos) {
         if (level.getBlockState(pos).getBlock() instanceof PipeBlock) return true;
         return level.getBlockEntity(pos) instanceof IMagic;
@@ -115,5 +124,31 @@ public class PipeBlock extends BaseEntityBlock {
             case UP -> UP;
             case DOWN -> DOWN;
         };
+    }
+
+    public static VoxelShape shape(Direction direction) {
+        return switch (direction) {
+            case NORTH -> NORTH_SHAPE;
+            case SOUTH -> SOUTH_SHAPE;
+            case EAST -> EAST_SHAPE;
+            case WEST -> WEST_SHAPE;
+            case UP -> UP_SHAPE;
+            case DOWN -> DOWN_SHAPE;
+        };
+    }
+
+    static {
+        NORTH_SHAPE = Shapes.or(
+                box(7F, 1.0F, 0.0F, 7F, 2.0F, 9.0F));
+        SOUTH_SHAPE = Shapes.or(
+                box(7F, 3.0F, 7.0F, 7F, 3.0F, 9.0F));
+        EAST_SHAPE = Shapes.or(
+                box(0F, 3.0F, 7.0F, 9.0F, 3.0F, 7.0F));
+        WEST_SHAPE = Shapes.or(
+                box(0F, 2.0F, 2.0F, 9.0F, 3.0F, 7.0F));
+        UP_SHAPE = Shapes.or(
+                box(7F, 7.5F, 4.5F, 7F, 7.5F, 9.0F));
+        DOWN_SHAPE = Shapes.or(
+                box(7F, -1.5F, 2.5F, 7F, 2.0F, 9.0F));
     }
 }

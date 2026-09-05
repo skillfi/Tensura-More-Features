@@ -5,6 +5,7 @@ import com.github.skillfi.tensura_mf.api.energy.Network;
 import com.github.skillfi.tensura_mf.api.energy.NetworkEntry;
 import com.github.skillfi.tensura_mf.api.energy.NetworkType;
 import com.github.skillfi.tensura_mf.event.TensuraMfBlockEvents;
+import dev.architectury.event.CompoundEventResult;
 import io.github.manasmods.manascore.storage.api.Storage;
 import io.github.manasmods.manascore.storage.api.StorageEvents;
 import io.github.manasmods.manascore.storage.api.StorageKey;
@@ -134,8 +135,15 @@ public class NetworkStorage extends Storage implements INetwork {
     }
 
     @Override
+    public float getMaxMagicEnergy(UUID networkId) {
+        if (networks.stream().anyMatch(network -> network.getNetworkId().equals(networkId))) return networks.stream().filter(network -> network.getNetworkId().equals(networkId)).findFirst().get().getMaxMagicAmount();
+        return 0.0F;
+    }
+
+    @Override
     public void consumptionMagicEnergy(ServerLevel level, BlockState state, BlockPos pos, UUID networkId, float amount) {
-        TensuraMfBlockEvents.ENERGY_CONSUMPTION.invoker().get(level, state, pos, networkId, amount);
+        CompoundEventResult<Float> result = TensuraMfBlockEvents.ENERGY_CONSUMPTION.invoker().get(level, state, pos, networkId, amount);
+        if (result.isTrue()) setMagicEnergy(networkId, Math.max(0.0F, getMagicEnergy(networkId) - amount));
     }
 
 

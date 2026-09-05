@@ -4,6 +4,8 @@ import com.github.skillfi.tensura_mf.api.energy.INetworkEntry;
 import com.github.skillfi.tensura_mf.api.energy.Network;
 import com.github.skillfi.tensura_mf.api.energy.NetworkType;
 import com.github.skillfi.tensura_mf.registry.block.TensuraMfBlocksEntities;
+import com.github.skillfi.tensura_mf.storage.INetwork;
+import com.github.skillfi.tensura_mf.storage.TensuraMfStorages;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -53,7 +55,12 @@ public class PipeBlockEntity extends BlockEntity implements INetworkEntry {
             return;
         }
 
-//        blockEntity.transfer(level, state, pos);
+        INetwork iNetwork = TensuraMfStorages.getNetworkFrom(level);
+        if (iNetwork.isInNetwork(pos)) {
+            Network network1 = iNetwork.getNetwork(pos);
+            blockEntity.setNetworkId(network1.networkId);
+        }
+
         if (blockEntity.needUpdate) {
             blockEntity.setChanged();
             level.sendBlockUpdated(pos, state, state, 2);

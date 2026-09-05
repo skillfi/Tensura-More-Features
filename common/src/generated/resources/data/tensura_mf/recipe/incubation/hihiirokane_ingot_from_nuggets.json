@@ -1,0 +1,13 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 72900,
+  "input": {
+    "item": "tensura:hihiirokane_nugget"
+  },
+  "inputCount": 9,
+  "magicAmount": 72900.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_ingot"
+  }
+}

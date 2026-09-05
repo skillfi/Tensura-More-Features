@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 510300,
+  "input": {
+    "item": "tensura:orichalcum_chestplate"
+  },
+  "magicAmount": 510300.0,
+  "output": {
+    "count": 1,
+    "id": "tensura:hihiirokane_chestplate"
+  }
+}

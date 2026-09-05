@@ -1,0 +1,12 @@
+{
+  "type": "tensura_mf:magic_incubation",
+  "incubationTick": 33,
+  "input": {
+    "item": "tensura:low_magisteel_scythe"
+  },
+  "magicAmount": 33.333332,
+  "output": {
+    "count": 1,
+    "id": "tensura:high_magisteel_scythe"
+  }
+}

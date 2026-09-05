@@ -1,7 +1,0 @@
-{
-  "parent": "tensura_mf:block/magicule_incubator_bottom",
-  "textures": {
-    "0": "tensura_mf:block/magicule_incubator_bottom_lit",
-    "particle": "tensura_mf:block/magicule_incubator_bottom"
-  }
-}
