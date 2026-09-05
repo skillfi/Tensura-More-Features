@@ -1,19 +1,19 @@
 # TenSura More Features
 
-`TenSura More Features` (`tensura_mf`) — мод для Minecraft 1.21.1, який розширює [Tensura: Reincarnated] додатковими магічними блоками, рецептами, предметами та істотами. Проєкт побудований на Architectury й містить спільний код та окремі реалізації для Fabric і NeoForge.
+`TenSura More Features` (`tensura_mf`) is a Minecraft 1.21.1 mod that expands [Tensura: Reincarnated] with additional magical blocks, recipes, items, and entities. The project is built with Architectury and contains shared code together with separate Fabric and NeoForge implementations.
 
-## Можливості
+## Features
 
-- магічна енергетична мережа з генераторами, трубами та сховищами;
-- магічний інкубатор і власний тип рецептів `magic_incubation`;
-- магічні матеріали, блоки та інші предмети, зареєстровані модом;
-- блоки-генератори на основі різних будівельних матеріалів;
-- додаткові меню, клієнтські екрани та відображення магічної енергії;
-- нові монстри, їхні атрибути, спавн і spawn eggs;
-- data generation для рецептів, loot tables, тегів, моделей, blockstates та локалізацій;
-- підтримка компонентів предметів, зокрема збереження даних спеціального спорядження під час обробки інкубатором.
+- a magical energy network with generators, pipes, and storage;
+- a magical incubator and the custom `magic_incubation` recipe type;
+- magical materials, blocks, and other registered items;
+- generator blocks based on different building materials;
+- additional menus, client screens, and magical energy displays;
+- new monsters, attributes, spawning rules, and spawn eggs;
+- data generation for recipes, loot tables, tags, models, blockstates, and translations;
+- item component support, including preserving special equipment data while processing items in the incubator.
 
-## Вимоги
+## Requirements
 
 - JDK 21;
 - Minecraft 1.21.1;
@@ -21,75 +21,75 @@
 - Architectury API 13.0.8;
 - Tensura: Reincarnated;
 - ManasCore;
-- GeckoLib, SmartBrainLib і TerraBlender.
+- GeckoLib, SmartBrainLib, and TerraBlender.
 
-Версії залежностей для розробки вказані у [`gradle.properties`](gradle.properties). Для запуску гри також потрібен відповідний loader: Fabric або NeoForge.
+Development dependency versions are listed in [`gradle.properties`](gradle.properties). Running the game also requires the appropriate loader: Fabric or NeoForge.
 
-## Структура проєкту
+## Project Structure
 
 ```text
-common/      Спільний код і ресурси для всіх платформ
-fabric/      Fabric-реалізація та Fabric entrypoints
-neoforge/    NeoForge-реалізація, реєстрації та data generation
-libs/        Локальні бібліотеки, що використовуються під час збірки
-run/         Робочі директорії dev-середовища
+common/      Shared code and resources for all platforms
+fabric/      Fabric implementation and entrypoints
+neoforge/    NeoForge implementation, registrations, and data generation
+libs/        Local libraries used during the build
+run/         Development environment working directories
 ```
 
-Згенеровані ресурси спільного модуля зберігаються в `common/src/generated/resources`.
+Generated resources for the common module are stored in `common/src/generated/resources`.
 
-## Підготовка
+## Setup
 
-1. Встановіть JDK 21 і переконайтеся, що `java -version` показує версію 21.
-2. Клонуйте репозиторій і відкрийте його як Gradle-проєкт.
-3. Перевірте, що локальні бібліотеки в `libs/` присутні, а залежності можуть бути завантажені.
-4. Використовуйте Gradle 8.8. У цьому checkout збережено конфігурацію wrapper у `gradle/wrapper`, але скрипти `gradlew` і `gradlew.bat` не входять до репозиторію.
+1. Install JDK 21 and verify that `java -version` reports version 21.
+2. Clone the repository and open it as a Gradle project.
+3. Make sure the local libraries in `libs/` are present and dependencies can be downloaded.
+4. Use Gradle 8.8. This checkout contains the wrapper configuration in `gradle/wrapper`, but the `gradlew` and `gradlew.bat` scripts are not included in the repository.
 
-## Основні команди
+## Main Commands
 
-### Перевірка й збірка
+### Compilation and Build
 
 ```bash
 gradle common:compileJava neoforge:compileJava
 gradle build
 ```
 
-Для Fabric замість NeoForge можна виконати:
+For Fabric, use:
 
 ```bash
 gradle fabric:compileJava
 ```
 
-### Запуск клієнта
+### Running the Client
 
 ```bash
 gradle neoforge:runClient
 gradle fabric:runClient
 ```
 
-У Windows використовуйте ті самі task-и через встановлений Gradle.
+On Windows, use the same tasks with the installed Gradle command.
 
-### Генерація даних
+### Data Generation
 
-NeoForge data generation створює рецепти та інші ресурси у спільному generated-директорії:
+NeoForge data generation creates recipes and other resources in the common generated resources directory:
 
 ```bash
 gradle neoforge:runData
 ```
 
-Після зміни провайдерів рецептів перевіряйте згенеровані JSON-файли в `common/src/generated/resources` і не додавайте їх до коміту, якщо вони є лише локальним результатом запуску.
+After changing recipe providers, check the generated JSON files in `common/src/generated/resources` and do not commit them if they are only local run output.
 
-## Розробка
+## Development
 
-- Платформонезалежну логіку розміщуйте в `common`.
-- Код, що використовує тільки Fabric або NeoForge API, розміщуйте у відповідному платформному модулі.
-- Нові реєстрації додавайте через існуючі registry-класи проєкту.
-- Для рецептів використовуйте data providers NeoForge та перевіряйте унікальність їхніх ідентифікаторів.
-- Після змін у Java-коді запускайте компіляцію потрібної платформи; після змін у data providers — `neoforge:runData`.
+- Put platform-independent logic in `common`.
+- Put code that uses only Fabric or NeoForge APIs in the corresponding platform module.
+- Add new registrations through the project's existing registry classes.
+- Use NeoForge data providers for recipes and verify that recipe identifiers are unique.
+- After changing Java code, compile the required platform; after changing data providers, run `neoforge:runData`.
 
-Основний namespace мода — `tensura_mf`, а головний клас спільного модуля — `com.github.skillfi.tensura_mf.TensuraMf`.
+The mod's main namespace is `tensura_mf`, and the common module's main class is `com.github.skillfi.tensura_mf.TensuraMf`.
 
-## Ліцензія
+## License
 
-Умови використання визначені у [`LICENSE.txt`](LICENSE.txt).
+The terms of use are defined in [`LICENSE.txt`](LICENSE.txt).
 
 [Tensura: Reincarnated]: https://www.curseforge.com/minecraft/mc-mods/tensura-reincarnated
